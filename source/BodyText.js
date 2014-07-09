@@ -12,12 +12,12 @@
 		/**
 		* @private
 		*/
-		name: "moon.BodyText",
+		name: 'moon.BodyText',
 
 		/**
 		* @private
 		*/
-		classes: "moon-body-text moon-body-text-spacing moon-body-text-control",
+		classes: 'moon-body-text moon-body-text-spacing moon-body-text-control',
 
 		/**
 		*
@@ -60,14 +60,14 @@
 		contentChanged: function() {
 			this.inherited(arguments);
 			this.detectTextDirectionality();
-			this.bubble("onRequestSetupBounds");
+			this.bubble('onRequestSetupBounds');
 		},
 
 		/**
 		* @private
 		*/
 		centeredChanged: function() {
-			this.applyStyle("text-align", this.centered ? "center" : null);
+			this.applyStyle('text-align', this.centered ? 'center' : null);
 		}
 	});
 
