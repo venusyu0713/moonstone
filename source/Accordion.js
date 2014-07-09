@@ -47,43 +47,43 @@
 	enyo.kind(
 		/** @lends moon.Accordion.prototype */ {
 
-			/**
-			* @private
-			*/
-			name: 'moon.Accordion',
+		/**
+		* @private
+		*/
+		name: 'moon.Accordion',
 
-			/**
-			* @private
-			*/
-			kind: 'moon.ExpandableListItem',
+		/**
+		* @private
+		*/
+		kind: 'moon.ExpandableListItem',
 
-			/**
-			* @private
-			*/
-			classes: 'moon-accordion',
+		/**
+		* @private
+		*/
+		classes: 'moon-accordion',
 
-			/**
-			* @private
-			*/
-			components: [
-				{name: 'headerWrapper', kind: 'moon.Item', classes: 'moon-accordion-header-wrapper', onSpotlightFocus: 'headerFocus', ontap: 'expandContract', components: [
-					// headerContainer required to avoid bad scrollWidth returned in RTL for certain text widths
-					// (webkit bug)
-					{name: 'headerContainer', classes: 'moon-expandable-list-item-header moon-expandable-picker-header moon-accordion-header', components: [
-						{name: 'header', kind: 'moon.MarqueeText'}
-					]}
-				]},
-				{name: 'drawer', kind: 'enyo.Drawer', resizeContainer:false, classes: 'moon-expandable-list-item-client', components: [
-					{name: 'client', kind: 'Group', tag: null}
+		/**
+		* @private
+		*/
+		components: [
+			{name: 'headerWrapper', kind: 'moon.Item', classes: 'moon-accordion-header-wrapper', onSpotlightFocus: 'headerFocus', ontap: 'expandContract', components: [
+				// headerContainer required to avoid bad scrollWidth returned in RTL for certain text widths
+				// (webkit bug)
+				{name: 'headerContainer', classes: 'moon-expandable-list-item-header moon-expandable-picker-header moon-accordion-header', components: [
+					{name: 'header', kind: 'moon.MarqueeText'}
 				]}
-			],
+			]},
+			{name: 'drawer', kind: 'enyo.Drawer', resizeContainer:false, classes: 'moon-expandable-list-item-client', components: [
+				{name: 'client', kind: 'Group', tag: null}
+			]}
+		],
 
-			/**
-			* @private
-			*/
-			bindings: [
-				{from: '.disabled', to: '.$.headerWrapper.disabled'}
-			]
-		});
+		/**
+		* @private
+		*/
+		bindings: [
+			{from: '.disabled', to: '.$.headerWrapper.disabled'}
+		]
+	});
 
 })(enyo, this);
