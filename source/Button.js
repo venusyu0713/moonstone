@@ -139,8 +139,9 @@
 
 		/**
 		* Bubble _requestScrollIntoView_ event
-		* @private
+		*
 		* @fires moon.Scroller#event:onRequestScrollIntoView
+		* @private
 		*/
 		spotFocused: function (inSender, inEvent) {
 			if (inEvent.originator === this) {
