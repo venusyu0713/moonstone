@@ -49,7 +49,7 @@
 		/**
 		* @private
 		*/
-		create: function() {
+		create: function () {
 			this.inherited(arguments);
 			this.centeredChanged();
 		},
@@ -57,7 +57,7 @@
 		/**
 		* @private
 		*/
-		contentChanged: function() {
+		contentChanged: function () {
 			this.inherited(arguments);
 			this.detectTextDirectionality();
 			this.bubble('onRequestSetupBounds');
@@ -66,7 +66,7 @@
 		/**
 		* @private
 		*/
-		centeredChanged: function() {
+		centeredChanged: function () {
 			this.applyStyle('text-align', this.centered ? 'center' : null);
 		}
 	});

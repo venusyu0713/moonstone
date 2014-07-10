@@ -134,7 +134,7 @@
 		/**
 		* @private
 		*/
-		calculateJoinedPanels: function(inContainerWidth) {
+		calculateJoinedPanels: function (inContainerWidth) {
 			inContainerWidth = inContainerWidth || this.getContainerWidth();
 
 			var panels = this.container.getPanels(),
@@ -154,7 +154,7 @@
 		/**
 		* @private
 		*/
-		isPanelJoined: function(inPanelIndex, inIndex, inContainerWidth) {
+		isPanelJoined: function (inPanelIndex, inIndex, inContainerWidth) {
 			inContainerWidth = inContainerWidth || this.getContainerWidth();
 
 			var panels = this.container.getPanels(),
@@ -180,7 +180,7 @@
 		/**
 		* @private
 		*/
-		formatJoinedPanels: function(inJoinedPanels) {
+		formatJoinedPanels: function (inJoinedPanels) {
 			var panels = this.container.getPanels(),
 				ret = [], i, j;
 
@@ -201,7 +201,7 @@
 		/**
 		* @private
 		*/
-		calculateTransitionPositions: function(inContainerWidth, inJoinedPanels) {
+		calculateTransitionPositions: function (inContainerWidth, inJoinedPanels) {
 			var panels = this.container.getPanels(),
 				tp = {};
 
@@ -217,7 +217,7 @@
 		/**
 		* @private
 		*/
-		calculateXPos: function(inPanelIndex, inIndex, inContainerWidth, inJoinedPanels) {
+		calculateXPos: function (inPanelIndex, inIndex, inContainerWidth, inJoinedPanels) {
 			var breadcrumbEdge = this.getBreadcrumbEdge(inIndex),
 				panels = this.container.getPanels(),
 				xPos,
@@ -267,7 +267,7 @@
 		/**
 		* @private
 		*/
-		recalculatePanelTransitionPositions: function(inPanelIndex, inContainerWidth, inJoinedPanels) {
+		recalculatePanelTransitionPositions: function (inPanelIndex, inContainerWidth, inJoinedPanels) {
 			var panels = this.container.getPanels();
 			for (var i = 0; i < panels.length; i++) {
 				this.container.transitionPositions[inPanelIndex + '.' + i] = this.calculateXPos(inPanelIndex, i, inContainerWidth, inJoinedPanels);
@@ -277,7 +277,7 @@
 		/**
 		* @private
 		*/
-		adjustTransitionPositionsForJoinedPanels: function(inJoinedPanels) {
+		adjustTransitionPositionsForJoinedPanels: function (inJoinedPanels) {
 			var tp = this.container.transitionPositions,
 				panels = this.container.getPanels();
 
@@ -297,7 +297,7 @@
 		/**
 		* @private
 		*/
-		updateWidths: function(inContainerWidth, inJoinedPanels) {
+		updateWidths: function (inContainerWidth, inJoinedPanels) {
 			var panels = this.container.getPanels(),
 				diff,
 				i, j;
@@ -351,7 +351,7 @@
 		/**
 		* @private
 		*/
-		applyUpdatedWidths: function() {
+		applyUpdatedWidths: function () {
 			var panels = this.container.getPanels();
 			for (var i = 0; i < panels.length; i++) {
 				panels[i].applyStyle('width', panels[i].actualWidth + 'px');
@@ -361,7 +361,7 @@
 		/**
 		* @private
 		*/
-		calcBreadcrumbPositions: function(inJoinedPanels) {
+		calcBreadcrumbPositions: function (inJoinedPanels) {
 			var panels = this.container.getPanels(),
 				isBreadcrumb,
 				index,
@@ -385,7 +385,7 @@
 		/**
 		* @private
 		*/
-		start: function() {
+		start: function () {
 			this.inherited(arguments);
 
 			var tp = this.container.transitionPositions;
@@ -408,7 +408,7 @@
 		/**
 		* @private
 		*/
-		arrange: function(inC, inName) {
+		arrange: function (inC, inName) {
 			var c$ = this.container.getPanels();
 			var s = this.container.clamp(inName);
 			var i, c, xPos;
@@ -431,7 +431,7 @@
 		/**
 		* @private
 		*/
-		isOffscreen: function(inPanelIndex, inActiveIndex) {
+		isOffscreen: function (inPanelIndex, inActiveIndex) {
 			if (!this.container.transitionPositions) {
 				return;
 			}
@@ -447,14 +447,14 @@
 		/**
 		* @private
 		*/
-		isBreadcrumb: function(inPanelIndex, inActiveIndex) {
+		isBreadcrumb: function (inPanelIndex, inActiveIndex) {
 			return this.breadcrumbPositions && this.breadcrumbPositions[inPanelIndex + '.' + inActiveIndex];
 		},
 
 		/**
 		* @private
 		*/
-		calcBreadcrumbEdges: function() {
+		calcBreadcrumbEdges: function () {
 			this.breadcrumbEdges = [];
 			for (var i = 0, panel; (panel = this.container.getPanels()[i]); i++) {
 				this.breadcrumbEdges[i] = (i === 0) ? 0 : this.breadcrumbWidth;
@@ -464,21 +464,21 @@
 		/**
 		* @private
 		*/
-		getContainerWidth: function() {
+		getContainerWidth: function () {
 			return this.containerBounds.width;
 		},
 
 		/**
 		* @private
 		*/
-		getBreadcrumbGap: function() {
+		getBreadcrumbGap: function () {
 			return this.container.breadcrumbGap || 0;
 		},
 
 		/**
 		* @private
 		*/
-		getBreadcrumbEdge: function(inIndex) {
+		getBreadcrumbEdge: function (inIndex) {
 			var leftMargin = this.getContainerWidth() * (1 - this.container.panelCoverRatio);
 			if (this.container.panelCoverRatio == 1) {
 				var containerPadding = this.getContainerPadding();
@@ -494,7 +494,7 @@
 		* Sets bounds for each panel to fit vertically.
 		* @private
 		*/
-		applyVerticalFit: function() {
+		applyVerticalFit: function () {
 			var panels = this.container.getPanels(),
 				padding = this.getContainerPadding();
 
@@ -506,7 +506,7 @@
 		/**
 		* @private
 		*/
-		getContainerPadding: function() {
+		getContainerPadding: function () {
 			return this.container.hasNode() ? enyo.dom.calcPaddingExtents(this.container.node) : {};
 		},
 
@@ -514,7 +514,7 @@
 		* Return _true_ if any panels will move in the transition from _inFromIndex_ to _inToIndex_
 		* @private
 		*/
-		shouldArrange: function(inFromIndex, inToIndex) {
+		shouldArrange: function (inFromIndex, inToIndex) {
 			if (!(inFromIndex >= 0 && inToIndex >= 0)) {
 				return;
 			}

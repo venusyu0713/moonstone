@@ -8,24 +8,26 @@
 
 	Below is example genarated-output of the "ur", Urdu locale-font.
 
-@font-face { 
+```
+'@font-face' {
   font-family: "Moonstone LG Display ur";
   font-weight: normal;
   src: local("LG Display_Urdu");
   unicode-range: U+0600-U+06FF, U+FE70-U+FEFE, U+FB50-U+FDFF;
 } 
-@font-face { 
+'@font-face' {
   font-family: "Moonstone LG Display ur Bold";
   font-weight: normal;
   src: local("LG Display_Urdu");
   unicode-range: U+0600-U+06FF, U+FE70-U+FEFE, U+FB50-U+FDFF;
 } 
-@font-face { 
+'@font-face' {
   font-family: "Moonstone LG Display ur Light";
   font-weight: normal;
   src: local("LG Display_Urdu");
   unicode-range: U+0600-U+06FF, U+FE70-U+FEFE, U+FB50-U+FDFF;
-} 
+}' 
+```
 
  */
 
