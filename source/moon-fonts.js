@@ -26,7 +26,7 @@
   font-weight: normal;
   src: local("LG Display_Urdu");
   unicode-range: U+0600-U+06FF, U+FE70-U+FEFE, U+FB50-U+FDFF;
-}' 
+} 
 ```
 
  */
