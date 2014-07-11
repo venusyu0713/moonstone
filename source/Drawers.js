@@ -1,40 +1,70 @@
 (function (enyo, scope) {
 	/**
-		_moon.Drawers_ is a container kind designed to hold a set of
-		[moon.Drawer](#moon.Drawer) objects and client content. The _drawers_ property
-		accepts an array of _moon.Drawer_ controls. The associated [drawer
-		handles](#moon.DrawerHandle) are positioned in their own small drawer,
-		centered at the top of the 'dresser'--the region containing the array of
-		Drawer controls and the activator nub.
+	* Handler for initial rendering event
+	*
+	* event.drawersHeight contains the height of the drawer
+	*
+	* @event moon.Drawers#event:onDrawersRendered
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
 
-		When a handle is selected, it opens the corresponding Drawer object's main
-		drawer or control drawer, depending on how the Drawer object is configured.
+	/**
+	* Handler for initial resizing event to size drawers to full screen
+	*
+	* event.drawersHeight contains the height of the drawer
+	*
+	* @event moon.Drawers#event:onDrawersResized
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
 
-		The control's child components may be of any kind.
 
-			{
-				kind: 'moon.Drawers',
-				drawers: [
-					{
-						name: 'musicDrawer',
-						kind: 'moon.Drawer',
-						handle: {kind: 'moon.DrawerHandle', content: 'Handle'},
-						components: [
-							{content: 'Drawer Content'}
-						],
-						controlDrawerComponents: [
-							{content: 'Controls'}
-						]
-					}
-				],
-				components: [
-					{content: 'Content Area'}
-				]
-			}
+	/**
+	* _moon.Drawers_ is a container kind designed to hold a set of
+	* {@link moon.Drawer} objects and client content. The {@link moon.Drawers#drawers} property
+	* accepts an array of {@link moon.Drawer} controls. The associated
+	* {@link moon.DrawerHandle) are positioned in their own small drawer,
+	* centered at the top of the 'dresser'--the region containing the array of
+	* Drawer controls and the activator nub.
+	*
+	* When a handle is selected, it opens the corresponding Drawer object's main
+	* drawer or control drawer, depending on how the Drawer object is configured.
+	* The control's child components may be of any kind.
+	*
+	* ```
+	* 		{
+	* 			kind: 'moon.Drawers',
+	* 			drawers: [
+	* 				{
+	* 					name: 'musicDrawer',
+	* 					kind: 'moon.Drawer',
+	* 					handle: {kind: 'moon.DrawerHandle', content: 'Handle'},
+	* 					components: [
+	* 						{content: 'Drawer Content'}
+	* 					],
+	* 					controlDrawerComponents: [
+	* 						{content: 'Controls'}
+	* 					]
+	* 				}
+	* 			],
+	* `		components: [
+	* 				{content: 'Content Area'}
+	* 			]
+	* 		}
+	* ```
+	*
 	* @class moon.Drawers
 	* @extends enyo.Control
 	* @public
-
 	*/
 	enyo.kind(
 		/** @lends moon.Drawers.prototype */ {
@@ -49,22 +79,26 @@
 		*/
 		kind: 'enyo.Control',
 
-		//* @protected
 		/**
 		* @private
 		*/
 		classes: 'moon-drawers enyo-fit',
 
-		//* @public
 		/**
 		* @private
 		*/
 		published: /** @lends moon.Drawers.prototype */ {
-			//* Populate with an array of _moon.Drawer_ components
+
+			/**
+			* Populate with an array of {@link moon.Drawer} components
+			*
+			* @type {object}
+			* @default null
+			* @public
+			*/
 			drawers: null
 		},
 
-		//* @protected
 		/**
 		* @private
 		*/
@@ -109,6 +143,8 @@
 		},
 
 		/**
+		* event waterfalls down
+		* @fires moon.Drawers#event:onDrawersRendered
 		* @private
 		*/
 		rendered: function () {
@@ -290,6 +326,7 @@
 		},
 
 		/**
+		* @fires moon.Drawers#event:onDrawersResized
 		* @private
 		*/
 		handleResize: function () {
@@ -300,10 +337,9 @@
 		},
 
 		/**
-			Updates the activator's style only when it is not animating, so that there
-			are no visual artifacts.
-		*/
-		/**
+		* Updates the activator's style only when it is not animating, so that there
+		* are no visual artifacts.
+		*
 		* @private
 		*/
 		resizeHandleContainer: function (inSender, inEvent) {

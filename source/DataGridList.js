@@ -1,8 +1,8 @@
 (function (enyo, scope) {
 	/**
-		_moon.DataGridList_ is an [enyo.DataGridList](#enyo.DataGridList) with
-		Moonstone visual styling applied.
-
+	* _moon.DataGridList_ is an {@link enyo.DataGridList} with
+	* Moonstone visual styling applied.
+	*
 	* @class moon.DataGridList
 	* @extends enyo.DataGridList
 	* @mixes moon.DataListSpotlightSupport
@@ -21,7 +21,6 @@
 		*/
 		kind: 'enyo.DataGridList',
 
-		//* @protected
 		/**
 		* @private
 		*/
@@ -87,12 +86,10 @@
 		}
 	});
 
-	//*@protected
 	/**
-		Overload the delegate strategy to incorporate measurements for our scrollers
-		when they are visible.
-	*/
-	/**
+	* Overload the delegate strategy to incorporate measurements for our scrollers
+	* when they are visible.
+	*
 	* @private
 	*/
 	(function (enyo, moon) {
@@ -100,8 +97,8 @@
 		enyo.kind.extendMethods(p, {
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			refresh: enyo.inherit(function (sup) {
 				return function (list) {
@@ -151,8 +148,8 @@
 			},
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			reset: enyo.inherit(function (sup) {
 				return function (list) {
@@ -164,8 +161,8 @@
 			}),
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			updateBounds: enyo.inherit(function (sup) {
 				return function (list) {

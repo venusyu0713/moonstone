@@ -1,18 +1,20 @@
 (function (enyo, scope) {
 	/**
-		_moon.DatePicker_ is a control that can be used to display--or allow the
-		selection of--a day, month, and year.
-
-			{
-				kind: 'moon.DatePicker',
-				noneText: 'Pick a Date',
-				content: 'Date',
-				onChange: 'changed'
-			}
-
-		Set the _value_ property to a standard JavaScript Date object to initialize
-		the picker, or to change it programmatically at runtime.
-
+	* _moon.DatePicker_ is a control that can be used to display--or allow the
+	* selection of--a day, month, and year.
+	*
+	* ```
+	*		{
+	*			kind: 'moon.DatePicker',
+	*			noneText: 'Pick a Date',
+	*			content: 'Date',
+	*			onChange: 'changed'
+	*		}
+	* ```
+	*
+	* Set the {@link moon.DateTimePickerBase#value} property to a standard JavaScript Date object to
+	* initialize the picker, or to change it programmatically at runtime.
+	*
 	* @class moon.DatePicker
 	* @extends moon.DateTimePickerBase
 	* @public
@@ -34,22 +36,56 @@
 		* @private
 		*/
 		published: /** @lends moon.DatePicker.prototype */ {
+
 			/**
-				Optional minimum year value. Must be specified using the Gregorian
-				calendar, regardless of the calendar type used by the specified locale.
+			* Optional minimum year value. Must be specified using the Gregorian
+			* calendar, regardless of the calendar type used by the specified locale.
+			*
+			* @type {number}
+			* @default 1900
+			* @public
 			*/
 			minYear: 1900,
-			/*
-				Optional maximum year value. Must be specified using the Gregorian
-				calendar, regardless of the calendar type used by the specified locale.
+
+			/**
+			* Optional maximum year value. Must be specified using the Gregorian
+			* calendar, regardless of the calendar type used by the specified locale.
+			*
+			* @type {number}
+			* @default 2099
+			* @public
 			*/
 			maxYear: 2099,
-			//* Optional label for day
-			dayText: moon.$L('day'),		// i18n 'DAY' label in moon.DatePicker widget
-			//* Optional label for month
-			monthText: moon.$L('month'),	// i18n 'MONTH' label in moon.DatePicker widget
-			//* Optional label for year
-			yearText: moon.$L('year')		// i18n 'YEAR' label in moon.DatePicker widget
+
+			/**
+			* Optional label for day
+			* i18n 'DAY' label in moon.DatePicker widget
+			*
+			* @type {string}
+			* @default 'day'
+			* @public
+			*/
+			dayText: moon.$L('day'),
+
+			/**
+			* Optional label for month
+			* i18n 'MONTH' label in moon.DatePicker widget
+			*
+			* @type {string}
+			* @default 'month'
+			* @public
+			*/
+			monthText: moon.$L('month'),
+
+			/**
+			* Optional label for year
+			* i18n 'YEAR' label in moon.DatePicker widget
+			*
+			* @type {string}
+			* @default 'year'
+			* @public
+			*/
+			yearText: moon.$L('year')
 		},
 
 		/**
@@ -200,8 +236,9 @@
 			return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		},
 
-		//* Returns number of days in a particular month/year.
 		/**
+		* Returns number of days in a particular month/year.
+		*
 		* @private
 		*/
 		monthLength: function (inYear, inMonth) {

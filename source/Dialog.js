@@ -1,8 +1,8 @@
 (function (enyo, scope) {
 	/**
-		_moon.Dialog_ is a [moon.Popup](#moon.Popup) with a title, a subtitle, a
-		message, and an area for additional controls.
-
+	* _moon.Dialog_ is a {@link moon.Popup} with a title, a subtitle, a
+	* message, and an area for additional controls.
+	*
 	* @class moon.Dialog
 	* @extends moon.Popup
 	* @mixes moon.MarqueeSupport
@@ -30,13 +30,41 @@
 		* @private
 		*/
 		published: /** @lends moon.Dialog.prototype */ {
-			//* The title string for the dialog
+
+			/**
+			* The title string for the dialog
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			title: '',
-			//* The subtitle string for the dialog
+
+			/**
+			* The subtitle string for the dialog
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			subTitle: '',
-			//* The message for the dialog
+
+			/**
+			* The message for the dialog
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			message: '',
-			//* When true, the title text will be converted to locale-safe uppercasing
+
+			/**
+			* When true, the title text will be converted to locale-safe uppercasing
+			*
+			* @type {boolean}
+			* @default true
+			* @public
+			*/
 			titleUpperCase: true
 		},
 

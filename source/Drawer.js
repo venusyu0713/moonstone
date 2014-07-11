@@ -1,37 +1,64 @@
 (function (enyo, scope) {
 	/**
-	    _moon.Drawer_, a control designed for use with [moon.Drawers](#moon.Drawers),
-	    consists of two drawers and a [moon.DrawerHandle](#moon.DrawerHandle).
-	    The main drawer is populated with any child components that are specified in
-	    the constructor; the optional second drawer (_controlDrawer_) is populated
-	    with components passed into the _controlDrawerComponents_ property.
+	* Fires when either the main drawer or the control drawer is activated.
+	*
+	* @event moon.Drawer#event:onActivate
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
 
-	    If the second drawer has no components, the main drawer will take up the full
-	    height of the containing view; otherwise, its height will be equal to the
-	    height of the containing view minus the height of the _controlDrawerComponents_.
+	/**
+	* Fires when either the main drawer or the control drawer is deactivated.
+	*
+	* @event moon.Drawer#event:onDeactivate
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
 
-	    A call to _toggleDrawer()_ will open the _controlDrawer_ if
-	    _controlDrawerComponents_ is non-empty; otherwise, it will open the main
-	    drawer.
 
-	    The control's child components may be of any kind.
-
-	        {
-	            name: 'musicDrawer',
-	            kind: 'moon.Drawer',
-	            handle: {kind: 'moon.DrawerHandle', content: 'Handle'},
-	            components: [
-	                {content: 'Drawer Content'}
-	            ],
-	            controlDrawerComponents: [
-	                {content: 'Controls'}
-	            ]
-	        }
-
+	/**
+	* _moon.Drawer_, a control designed for use with {@link moon.Drawers},
+	* consists of two drawers and a {@link moon.DrawerHandle}.
+	* The main drawer is populated with any child components that are specified in
+	* the constructor; the optional second drawer {@link moon.Drawer#controlDrawer} is populated
+	* with components passed into the {@link moon.Drawer#controlDrawerComponents} property.
+	*
+	* If the second drawer has no components, the main drawer will take up the full
+	* height of the containing view; otherwise, its height will be equal to the
+	* height of the containing view minus the height of the
+	* {@link moon.Drawer#controlDrawerComponents}.
+	*
+	* A call to {@link moon.Drawer#toggleDrawer} will open the {@link moon.Drawer#controlDrawer} if
+	* {@link moon.Drawer#controlDrawerComponents} is non-empty; otherwise, it will open the main
+	* drawer.
+	*
+	* The control's child components may be of any kind.
+	*
+	* ```
+	* 		{
+	* 			name: 'musicDrawer',
+	* 			kind: 'moon.Drawer',
+	* 			handle: {kind: 'moon.DrawerHandle', content: 'Handle'},
+	* 			components: [
+	* 				{content: 'Drawer Content'}
+	* 			],
+	* 			controlDrawerComponents: [
+	* 				{content: 'Controls'}
+	* 			]
+	* 		}
+	* ```
+	*
 	* @class moon.Drawer
 	* @extends enyo.Control
 	* @public
-
 	*/
 	enyo.kind(
 		/** @lends moon.Drawer.prototype */ {
@@ -55,13 +82,41 @@
 		* @private
 		*/
 		published: /** @lends moon.Drawer.prototype */ {
-			//* Components that are to be placed in the control drawer
+
+			/**
+			* Components that are to be placed in the control drawer
+			*
+			* @type {object}
+			* @default null
+			* @public
+			*/
 			controlDrawerComponents: null,
-			//* Typically set to an instance of _moon.DrawerHandle_
+
+			/**
+			* Typically set to an instance of {@link moon.DrawerHandle}
+			*
+			* @type {object}
+			* @default null
+			* @public
+			*/
 			handle: null,
-			//* Visibility state of the main drawer
+
+			/**
+			* Visibility state of the main drawer
+			*
+			* @type {boolean}
+			* @default false
+			* @public
+			*/
 			open: false,
-			//* Visibility state of the control drawer
+
+			/**
+			* Visibility state of the control drawer
+			*
+			* @type {boolean}
+			* @default false
+			* @public
+			*/
 			controlsOpen: false
 		},
 
@@ -69,9 +124,15 @@
 		* @private
 		*/
 		events: {
-			//* Fires when either the main drawer or the control drawer is activated.
+
+			/**
+			* {@link moon.Drawer#event:onActivate}
+			*/
 			onActivate: '',
-			//* Fires when either the main drawer or the control drawer is deactivated.
+
+			/**
+			* {@link moon.Drawer#event:onDeactivate}
+			*/
 			onDeactivate: ''
 		},
 
@@ -79,9 +140,15 @@
 		* @private
 		*/
 		handlers: {
-			//* Handler for initial rendering event
+
+			/**
+			* Handler for initial rendering event
+			*/
 			onDrawersRendered: 'drawersRendered',
-			//* Handler for initial resizing event to size drawers to full screen
+
+			/**
+			* Handler for initial resizing event to size drawers to full screen
+			*/
 			onDrawersResized: 'drawersResized'
 		},
 
@@ -145,6 +212,8 @@
 		},
 
 		/**
+		* @fires moon.Drawer#event:onActivate
+		* @fires moon.Drawer#event:onDeactivate
 		* @private
 		*/
 		openChanged: function () {
@@ -160,6 +229,8 @@
 		},
 
 		/**
+		* @fires moon.Drawer#event:onActivate
+		* @fires moon.Drawer#event:onDeactivate
 		* @private
 		*/
 		controlsOpenChanged: function () {
@@ -187,12 +258,14 @@
 		}
 	});
 
-	//* @protected
-
 	/**
-	    _moon.FullScreenDrawer_ is a content-free drawer that fills the client's
-	    full screen area.  It is only intended for use inside of `moon.Drawer`.
-	    Users should not instantiate _moon.FullScreenDrawer_ directly.
+	* _moon.FullScreenDrawer_ is a content-free drawer that fills the client's
+	* full screen area.  It is only intended for use inside of {@link moon.Drawer}.
+	* Users should not instantiate {@link moon.FullScreenDrawer} directly.
+	*
+	* @class moon.FullScreenDrawer
+	* @extends enyo.Drawer
+	* @protected
 	*/
 	enyo.kind({
 
@@ -206,7 +279,6 @@
 		*/
 		kind: 'enyo.Drawer',
 
-		//* @protected
 		/**
 		* @private
 		*/
@@ -223,10 +295,15 @@
 		* @private
 		*/
 		published: {
+
 			/**
-				An object that holds the client dimensions for the fullscreen drawer,
-				e.g.: _drawer.setDrawerProps({height:100px});_.  This property is only
-				intended to be used internally by _moon.Drawer_.
+			* An object that holds the client dimensions for the fullscreen drawer,
+			* e.g.: _drawer.setDrawerProps({height:100px});_.  This property is only
+			* intended to be used internally by {@link moon.Drawer}.
+			*
+			* @type {object}
+			* @default null
+			* @public
 			*/
 			drawerProps: null
 		},

@@ -1,12 +1,11 @@
 (function (enyo, scope) {
-	//* @protected
 	/**
-		_moon.DataListSpotlightSupport_ a mixin that provides spotlight handling code for use by
-		_moon.DataList_ and _moon.DataGridList_.  Since those each extend from their respective
-		enyo counterparts, this mixin provides common add-on code needed for proper spotlight handling.
-
+	* moon.DataListSpotlightSupport_ a mixin that provides spotlight handling code for use by
+	* {@link moon.DataList} and {@link moon.DataGridList}. Since those each extend from their respective
+	* enyo counterparts, this mixin provides common add-on code needed for proper spotlight handling.
+	*
 	* @mixin moon.DataListSpotlightSupport
-	* @public
+	* @private
 	*/
 	moon.DataListSpotlightSupport = {
 
@@ -130,9 +129,10 @@
 			return this.selectItem(inEvent, -1);
 		},
 
-		// Spot the next/previous control. Handles the case where this control may not be generated yet, otherwise the default
-		// behavior occurs that is handled by Spotlight.
 		/**
+		* Spot the next/previous control. Handles the case where this control may not be generated yet,
+		* otherwise the default behavior occurs that is handled by Spotlight.
+		*
 		* @private
 		*/
 		selectItem: function (inEvent, inDirection) {
@@ -157,8 +157,10 @@
 			}
 		},
 
-		// Find the next/previous spottable control, page to generate next page of controls in, and index of the next page to generate
 		/**
+		* Find the next/previous spottable control, page to generate next page of controls in, and
+		* index of the next page to generate
+		*
 		* @private
 		*/
 		findSpottableControl: function (inDirection, inPage, inPageIndex) {
@@ -256,8 +258,10 @@
 			return null;
 		},
 
-		// Retrieve the next/previous spottable child from the generated controls starting from the given index
 		/**
+		* Retrieve the next/previous spottable child from the generated controls starting from the given
+		* index
+		*
 		* @private
 		*/
 		getNextSpottableChild: function (inDirection, inFocusedIndex) {
@@ -360,8 +364,8 @@
 		},
 
 		/**
-		* @private
 		* @method
+		* @private
 		*/
 		didResize: enyo.inherit(function (sup) {
 			return function (sender, event) {
@@ -372,8 +376,8 @@
 		}),
 
 		/**
-		* @private
 		* @method
+		* @private
 		*/
 		modelsAdded: enyo.inherit(function (sup) {
 			return function (c, e, props) {
@@ -384,8 +388,8 @@
 		}),
 
 		/**
-		* @private
 		* @method
+		* @private
 		*/
 		modelsRemoved: enyo.inherit(function (sup) {
 			return function (c, e, props) {
@@ -396,19 +400,16 @@
 		})
 	};
 
-	//* @public
-
 	/**
-		_moon.DataList_ is an [enyo.DataList](#enyo.DataList) with Moonstone styling
-		applied.  It uses [moon.Scroller](#moon.Scroller) as its default scroller.
-
+	* _moon.DataList_ is an {@link enyo.DataList} with Moonstone styling
+	* applied.  It uses {@link moon.Scroller} as its default scroller.
+	*
 	* @class moon.DataList
 	* @extends enyo.DataList
 	* @mixes moon.DataListSpotlightSupport
 	* @public
 	*/
 	enyo.kind(
-
 		/** @lends moon.DataList.prototype */ {
 
 		/**
@@ -421,7 +422,6 @@
 		*/
 		kind: 'enyo.DataList',
 
-		//* @protected
 		/**
 		* @private
 		*/
@@ -448,10 +448,11 @@
 		scrollerOptions: { kind: 'moon.Scroller', horizontal: 'hidden' }
 	});
 
-	//* @protected
 	/**
-		Overload the delegate strategy to incorporate measurements for our scrollers
-		when they are visible.
+	* Overload the delegate strategy to incorporate measurements for our scrollers
+	* when they are visible.
+	*
+	* @private
 	*/
 	(function (enyo, moon) {
 		moon.DataList.delegates.vertical   = enyo.clone(moon.DataList.delegates.vertical);
@@ -459,8 +460,8 @@
 		var exts = {
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			refresh: enyo.inherit(function (sup) {
 				return function (list) {
@@ -513,8 +514,8 @@
 		enyo.kind.extendMethods(moon.DataList.delegates.vertical, {
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			reset: enyo.inherit(function (sup) {
 				return function (list) {
@@ -528,8 +529,8 @@
 			}),
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			updateBounds: enyo.inherit(function (sup) {
 				return function (list) {
@@ -547,8 +548,8 @@
 		enyo.kind.extendMethods(moon.DataList.delegates.horizontal, {
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			reset: enyo.inherit(function (sup) {
 				return function (list) {
@@ -562,8 +563,8 @@
 			}),
 
 			/**
-			* @private
 			* @method
+			* @private
 			*/
 			updateBounds: enyo.inherit(function (sup) {
 				return function (list) {

@@ -1,13 +1,30 @@
 (function (enyo, scope) {
 	/**
-		_moon.DateTimePickerBase_ is a base kind implementing fuctionality shared
-		by [moon.DatePicker](#moon.DatePicker) and [moon.TimePicker](#moon.TimePicker).
-		It is not intended to be used directly.
-
-	* @class moon.DatePickerBase
-	* @extends moon.ExpandableListItem
+	* Fires when the value changes.
+	*
+	* _event.name_ contains the name of this control.
+	*
+	* _event.value_ contains a standard JavaScript Date object representing
+	* the current value.
+	*
+	* @event moon.DateTimePickerBase#event:onChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
 	* @public
 	*/
+
+	/**
+	* _moon.DateTimePickerBase_ is a base kind implementing fuctionality shared
+	* by {@link moon.DatePicker} and {@link moon.TimePicker}.
+	* It is not intended to be used directly.
+	* @class moon.DateTimePickerBase
+	* @extends moon.ExpandableListItem
+	* @protected
+	*/
+
 	enyo.kind(
 		/** @lends moon.DateTimePickerBase.prototype */ {
 
@@ -35,13 +52,9 @@
 		* @private
 		*/
 		events: {
+
 			/**
-				Fires when the value changes.
-
-				_inEvent.name_ contains the name of this control.
-
-				_inEvent.value_ contains a standard JavaScript Date object representing
-				the current value.
+			* {@link moon.DateTimePickerBase#event:onChange}
 			*/
 			onChange: ''
 		},
@@ -58,16 +71,24 @@
 		* @private
 		*/
 		published: /** @lends moon.DateTimePickerBase.prototype */ {
-			//* Text to be displayed in the _currentValue_ control if no item is
-			//* currently selected
-			noneText: '',
+
 			/**
-				The locale (in IETF format) used for picker formatting.
+			* Text to be displayed in the _currentValue_ control if no item is
+			* currently selected
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
+			noneText: '',
 
-				This setting only applies when the _iLib_ library is loaded.
-
-				* When iLib is not present, US English (en-US) formatting is applied.
-
+			/**
+			* The locale (in IETF format) used for picker formatting.
+			*
+			* This setting only applies when the _iLib_ library is loaded.
+			*
+			* When iLib is not present, US English (en-US) formatting is applied.
+			*
 				* When iLib is present and _locale_ is set to the default value (_null_),
 				the picker uses iLib's current locale (which iLib tries to determine
 				from the system).
@@ -77,31 +98,48 @@
 
 				_locale_ may be changed after the picker is created, in which case the
 				picker will	be reformatted to match the new setting.
-
+			*
+			* @type {object}
+			* @default null
+			* @public
 			*/
 			locale: null,
+
 			/**
-				The value, expressed as a standard JavaScript Date object. When a Date object
-				is passed to _set('value')_, the control is updated to reflect the new
-				value. _get('value')_ returns a Date object.
+			* The value, expressed as a standard JavaScript Date object. When a Date object
+			* is passed to _set('value')_, the control is updated to reflect the new
+			* value. _get('value')_ returns a Date object.
+			*
+			* @type {object}
+			* @default null
+			* @public
 			*/
 			value: null,
+
 			/**
-				When true, the picker uses a 12-hour clock (this value is ignored when
-				iLib is loaded, since the meridiem will be set by the current locale)
+			* When true, the picker uses a 12-hour clock (this value is ignored when
+			* iLib is loaded, since the meridiem will be set by the current locale)
+			*
+			* @type {boolean}
+			* @default false
+			* @public
 			*/
 			meridiemEnable: false
 		},
 
 		/**
+		* set in subkind
+		*
 		* @private
 		*/
-		iLibFormatType: null, // set in subkind
+		iLibFormatType: null,
 
 		/**
+		* set in subkind
+		*
 		* @private
 		*/
-		defaultOrdering: null, // set in subkind
+		defaultOrdering: null,
 
 		/**
 		* @private
@@ -224,8 +262,9 @@
 			// implement in subkind
 		},
 
-		// If no item is selected, uses _this.noneText_ as current value.
 		/**
+		* If no item is selected, uses {@link moon.DateTimePickerBase#noneText} as current value.
+		*
 		* @private
 		*/
 		noneTextChanged: function () {
@@ -236,8 +275,9 @@
 			}
 		},
 
-		// When _this.open_ changes, shows/hides _this.$.currentValue_.
 		/**
+		* When {@link moon.ExpandableListItem#open} changes, shows/hides _this.$.currentValue_.
+		*
 		* @private
 		*/
 		openChanged: function () {

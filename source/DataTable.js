@@ -1,8 +1,8 @@
 (function (enyo, scope) {
 	/**
-		_moon.DataTable_ is an [enyo.DataTable](#enyo.DataTable) with Moonstone visual
-		styling applied.
-
+	* _moon.DataTable_ is an {@link enyo.DataTable} with Moonstone visual
+	* styling applied.
+	*
 	* @class moon.DataTable
 	* @extends enyo.DataTable
 	* @public
@@ -20,15 +20,14 @@
 		*/
 	   kind: 'enyo.DataTable',
 
-	   //* @protected
 		/**
 		* @private
 		*/
 	   defaultKind: 'moon.TableRow',
 
 		/**
-		* @private
 		* @method
+		* @private
 		*/
 		reset: enyo.inherit(function (sup) {
 			return function () {
