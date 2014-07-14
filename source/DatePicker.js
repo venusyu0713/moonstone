@@ -1,19 +1,20 @@
 (function (enyo, scope) {
 	/**
-	* _moon.DatePicker_ is a control that can be used to display--or allow the
-	* selection of--a day, month, and year.
+	* _moon.DatePicker_ is a control that can be used to display --or allow the selection of-- a
+	* day, month, and year.
 	*
 	* ```
-	*		{
-	*			kind: 'moon.DatePicker',
-	*			noneText: 'Pick a Date',
-	*			content: 'Date',
-	*			onChange: 'changed'
-	*		}
+	* {
+	* 	kind: 'moon.DatePicker',
+	* 	noneText: 'Pick a Date',
+	* 	content: 'Date',
+	* 	onChange: 'changed'
+	* }
 	* ```
 	*
-	* Set the {@link moon.DateTimePickerBase#value} property to a standard JavaScript Date object to
-	* initialize the picker, or to change it programmatically at runtime.
+	* Set the {@link moon.DateTimePickerBase#value} property to a
+	* [standard JavaScript Date object]{@link external:Date} to initialize the picker, or to change
+	* it programmatically at runtime.
 	*
 	* @class moon.DatePicker
 	* @extends moon.DateTimePickerBase
@@ -41,7 +42,7 @@
 			* Optional minimum year value. Must be specified using the Gregorian
 			* calendar, regardless of the calendar type used by the specified locale.
 			*
-			* @type {number}
+			* @type {Number}
 			* @default 1900
 			* @public
 			*/
@@ -51,7 +52,7 @@
 			* Optional maximum year value. Must be specified using the Gregorian
 			* calendar, regardless of the calendar type used by the specified locale.
 			*
-			* @type {number}
+			* @type {Number}
 			* @default 2099
 			* @public
 			*/
@@ -61,7 +62,7 @@
 			* Optional label for day
 			* i18n 'DAY' label in moon.DatePicker widget
 			*
-			* @type {string}
+			* @type {String}
 			* @default 'day'
 			* @public
 			*/
@@ -71,7 +72,7 @@
 			* Optional label for month
 			* i18n 'MONTH' label in moon.DatePicker widget
 			*
-			* @type {string}
+			* @type {String}
 			* @default 'month'
 			* @public
 			*/
@@ -81,7 +82,7 @@
 			* Optional label for year
 			* i18n 'YEAR' label in moon.DatePicker widget
 			*
-			* @type {string}
+			* @type {String}
 			* @default 'year'
 			* @public
 			*/
