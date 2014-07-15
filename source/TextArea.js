@@ -49,7 +49,9 @@
 		},
 
 		/**
-		 * @private
+		 * Set the focus on the textarea
+		 *
+		 * @public
 		 */
 		focus: function () {
 			this.inherited(arguments);
@@ -62,7 +64,9 @@
 		},
 
 		/**
-		 * @private
+		 * Remove focus from textarea
+		 *
+		 * @public
 		 */
 		blur: function () {
 			if (this.hasNode()) {

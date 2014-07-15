@@ -3,7 +3,7 @@
 	 * Fires when the user changes the value of the toggle button, but not when the value is
 	 * changed programmatically.
 	 *
-	 * @event enyo.ToggleButton#event:onChange
+	 * @event moon.ToggleButton#event:onChange
 	 * @type {Object}
 	 * @property {Object} sender - The [component]{@link enyo.Component} that most recently
 	 *	propagated the [event]{@link external:event}.
