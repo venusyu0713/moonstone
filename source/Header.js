@@ -1,83 +1,258 @@
 (function (enyo, scope) {
 	/**
-	 _moon.Header_ is a Moonstone-styled control with a large title and an area for
-	 additional controls.
+	* Custom input event to allow apps to differentiate between inputs and header inputs
+	*
+	* @event moon.Header#event:onInputHeaderInput
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
+
+	/**
+	* Custom input change event to allow apps to differentiate between input changes and header
+	* input changes
+	*
+	* @event moon.Header#event:onInputHeaderChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
+	*/
+
+	/**
+	* _moon.Header_ is a Moonstone-styled control with a large title and an area for
+	* additional controls.
+	*
+	* @ui
+	* @class moon.Header
+	* @mixes moon.MarqueeSupport
+	* @public
 	 */
-	enyo.kind({
+	enyo.kind(
+		/** @lends moon.Header.prototype */ {
+
+		/**
+		* @private
+		*/
 		name: 'moon.Header',
-		//* @protected
+
+		/**
+		* @private
+		*/
 		classes: 'moon-header',
-		//* @public
-		published: {
-			//* Title of the header
+
+		/**
+		* @private
+		*/
+		published: /** @lends moon.Header.prototype */ {
+
+			/**
+			* Title of the header
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			title: '',
-			//* Text above the header
+
+			/**
+			* Text above the header
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			titleAbove: '',
-			//* Text below the header
+
+			/**
+			* Text below the header
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			titleBelow: '',
-			//* Sub-text below the header
+
+			/**
+			* Sub-text below the header
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			subTitleBelow: '',
-			/** If medium, the _moon-medium-header_ CSS class will be applied to this header
-				If small, the _moon-small-header_ CSS class will be applied to this header
-				If large, the _moon-header_ CSS class will be applied to this header
+
+			/**
+			* If medium, the _moon-medium-header_ CSS class will be applied to this header
+			* If small, the _moon-small-header_ CSS class will be applied to this header
+			* If large, the _moon-header_ CSS class will be applied to this header
+			*
+			* @type {String}
+			* @default 'large'
+			* @public
 			*/
 			type: 'large',
-			//* If true, the _moon-medium-header_ CSS class will be applied to this header
-			// Note: This property will be deprecated soon. For backward compatiblity, I leave it for a while.
-			// And until it is removed, 'small' refers to the historical size, which is now 'medium'
-			small: false,
+
 			/**
-				URL of background image(s).
-				This may be a string referring a single background image, or an array of
-				strings referring to multiple background images.
+			* If true, the _moon-medium-header_ CSS class will be applied to this header
+			* Note: This property will be deprecated soon. For backward compatiblity, I leave it for a
+			* while. And until it is removed, 'small' refers to the historical size, which is now 'medium'
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
+			*/
+			small: false,
+
+			/**
+			* URL of background image(s).
+			* This may be a string referring a single background image, or an array of
+			* strings referring to multiple background images.
+			*
+			* @type {String}
+			* @default null
+			* @public
 			*/
 			backgroundSrc: null,
+
 			/**
-				Position of background image, defined as a string of the form _'vertical
-				horizontal'_, with a space separating the _vertical_ and _horizontal_
-				properties (e.g., _'top right'_). If no second property is included, the
-				horizontal value will default to _right_.
-				As with _backgroundSrc_, an array of strings may be supplied to position
-				multiple background images. The order of items should be the same as in
-				_backgroundSrc_.
+			* Position of background image, defined as a string of the form _'vertical
+			* horizontal'_, with a space separating the _vertical_ and _horizontal_
+			* properties (e.g., _'top right'_). If no second property is included, the
+			* horizontal value will default to _right_.
+			* As with {@link moon.Header#backgroundSrc}, an array of strings may be supplied to position
+			* multiple background images. The order of items should be the same as in
+			* {@link moon.Header#backgroundSrc}.
+			*
+			* @type {String}
+			* @default 'top right'
+			* @public
 			*/
 			backgroundPosition: 'top right',
-			//* When using a full-bleed background image, set this property to true to indent
-			//* the header text/controls and remove the header lines
+
+			/**
+			* When using a full-bleed background image, set this property to true to indent
+			* the header text/controls and remove the header lines
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
+			*/
 			fullBleedBackground: false,
-			//* If true, title will be an input
+
+			/**
+			* If true, title will be an input
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
+			*/
 			inputMode: false,
-			//* When true, input will be blurred on Enter keypress (if focused)
+
+			/**
+			* When true, input will be blurred on Enter keypress (if focused)
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
+			*/
 			dismissOnEnter: false,
-			//* Text to display when the input is empty
+
+			/**
+			* Text to display when the input is empty
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			placeholder: '',
-			//* The value of the input
+
+			/**
+			* The value of the input
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			value: '',
-			//* When true, the title text will be converted to locale-safe uppercasing
+
+			/**
+			* When true, the title text will be converted to locale-safe uppercasing
+			*
+			* @type {Boolean}
+			* @default true
+			* @public
+			*/
 			titleUpperCase: true
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		mixins: ['moon.MarqueeSupport'],
+
+		/**
+		* @private
+		*/
 		marqueeOnSpotlight: false,
+
+		/**
+		* @private
+		*/
 		marqueeOnHover: true,
+
+		/**
+		* @private
+		*/
 		marqueeOnRender: true,
+
+		/**
+		* @private
+		*/
 		marqueeOnRenderDelay: 10000,
-		// Described in .moon-header class
+
+		/**
+		* Described in .moon-header class
+		*
+		* @private
+		*/
 		standardHeight: 360,
+
+		/**
+		* @private
+		*/
 		handlers: {
 			oninput: 'handleInput',
 			onchange: 'handleChange',
 			onRequestCreateListActions: 'handleRequestCreateComponents',
 			onListActionOpenChanged: 'handleListActionOpenChanged'
 		},
-		//* @public
+
+		/**
+		* @private
+		*/
 		events: {
-			//* Custom input event to allow apps to differentiate between inputs and header inputs
+
+			/**
+			* Custom input event to allow apps to differentiate between inputs and header inputs
+			*/
 			onInputHeaderInput: '',
-			//* Custom input change event to allow apps to differentiate between input changes and header input changes
+
+			/**
+			* Custom input change event to allow apps to differentiate between input changes and header
+			* input changes
+			*/
 			onInputHeaderChange: ''
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		components: [{
 			name: 'texts',
 			components: [{
@@ -119,10 +294,18 @@
 			kind: 'enyo.StyleAnimator',
 			onComplete: 'animationComplete'
 		}],
+
+		/**
+		* @private
+		*/
 		bindings: [
 			{from: '.value', to: '.$.titleInput.value', oneWay: false},
 			{from: '.dismissOnEnter', to: '.$.titleInput.dismissOnEnter'}
 		],
+
+		/**
+		* @private
+		*/
 		create: function () {
 			this.inherited(arguments);
 			// Note: This line will be deprecated soon. For backward compatiblity, I leave it for a while.
@@ -139,16 +322,28 @@
 			this.placeholderChanged();
 			this.fullBleedBackgroundChanged();
 		},
+
+		/**
+		* @private
+		*/
 		allowHtmlChanged: function () {
 			this.$.title.setAllowHtml(this.allowHtml);
 			this.$.titleBelow.setAllowHtml(this.allowHtml);
 			this.$.subTitleBelow.setAllowHtml(this.allowHtml);
 		},
+
+		/**
+		* @private
+		*/
 		backgroundSrcChanged: function () {
 			var bgs = (enyo.isArray(this.backgroundSrc)) ? this.backgroundSrc : [this.backgroundSrc];
 			bgs = enyo.map(bgs, function (inBackgroundSource) { return inBackgroundSource ? 'url(' + inBackgroundSource + ')' : null; });
 			this.applyStyle('background-image', (bgs.length) ? bgs.join(', ') : null);
 		},
+
+		/**
+		* @private
+		*/
 		backgroundPositionChanged: function () {
 			var bgp = this.backgroundPosition;
 			if (enyo.isArray(bgp)) {
@@ -163,16 +358,28 @@
 				posStr = (posArray.length === 0) ? 'top right': (posArray.length === 1) ? posArray[0] + ' right': bgp;
 			this.applyStyle('background-position', posStr);
 		},
+
+		/**
+		* @private
+		*/
 		fullBleedBackgroundChanged: function () {
 			this.addRemoveClass('full-bleed', this.fullBleedBackground);
 		},
+
+		/**
+		* @private
+		*/
 		handleRequestCreateComponents: function (inSender, inEvent) {
 			this.controlParent = null;
 			this.createComponents(inEvent.components, {owner: inEvent.originator});
 			this.discoverControlParent();
 		},
-		//* @public
-		//* Collapses the drawer, hiding its contents.
+
+		/**
+		* Collapses the drawer, hiding its contents.
+		*
+		* @public
+		*/
 		collapseToSmall: function () {
 			if (this.collapsed) {
 				return;
@@ -273,7 +480,12 @@
 			this.$.animator.play('collapseToSmall');
 			this.collapsed = true;
 		},
-		//* Expands the drawer, showing its contents.
+
+		/**
+		* Expands the drawer, showing its contents.
+		*
+		* @public
+		*/
 		expandToLarge: function () {
 			if (!this.collapsed) {
 				return;
@@ -354,7 +566,10 @@
 			this.$.animator.play('expandToLarge');
 			this.collapsed = false;
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		typeChanged: function (inOld) {
 			switch (inOld) {
 			case 'medium':
@@ -374,48 +589,81 @@
 				break;
 			}
 		},
-		//* @protected
-		// Note: This method will be deprecated soon. For backward compatiblity, I leave it for a while.
+
+		/**
+		* Note: This method will be deprecated soon. For backward compatiblity, I leave it for a while.
+		*
+		* @private
+		*/
 		smallChanged: function () {
 			this.addRemoveClass('moon-medium-header', this.getSmall());
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		contentChanged: function () {
 			this.$.title.setContent( this.getTitleUpperCase() ? enyo.toUpperCase(this.title || this.content) : (this.title || this.content) );
 			this.placeholderChanged();
 		},
-		//* @protected
-		// For backward-compatibility with original API
+
+		/**
+		* For backward-compatibility with original API
+		*
+		* @private
+		*/
 		titleChanged: function () {
 			this.contentChanged();
 			this.placeholderChanged();
 		},
+
+		/**
+		* @private
+		*/
 		placeholderChanged: function () {
 			// For backward-compatibility with original API
 			this.$.titleInput.set('placeholder', this.getTitleUpperCase() ? enyo.toUpperCase(this.placeholder || this.title || this.content) : (this.placeholder || this.title || this.content) );
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		titleUpperCaseChanged: function () {
 			this.titleChanged();
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		titleAboveChanged: function () {
 			this.$.titleAbove.addRemoveClass('no-border', this.titleAbove === '');
 			this.$.titleAbove.setContent(this.titleAbove);
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		titleBelowChanged: function () {
 			this.$.titleBelow.setContent(this.titleBelow || '');
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		subTitleBelowChanged: function () {
 			this.$.subTitleBelow.setContent(this.subTitleBelow || '');
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		animationComplete: function (inSender, inEvent) {
 			// Do something?
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		inputModeChanged: function () {
 			this.$.title.canGenerate = !this.inputMode;
 			this.$.title.setShowing(!this.inputMode);
@@ -437,16 +685,32 @@
 			}
 			this.addRemoveClass('moon-input-header', this.inputMode);
 		},
-		//* Create custom event for _input_ events
+
+		/**
+		* Create custom event for _input_ events
+		*
+		* @fires moon.Header#event:onInputHeaderInput
+		* @private
+		*/
 		handleInput: function (inSender, inEvent) {
 			this.doInputHeaderInput(inEvent);
 		},
-		//* Create custom event for _change_ events
+
+		/**
+		* Create custom event for _change_ events
+		*
+		* @fires moon.Header#event:onInputHeaderChange
+		* @private
+		*/
 		handleChange: function (inSender, inEvent) {
 			this.doInputHeaderChange(inEvent);
 		},
+
+
 		/**
-			Enlarge listActionDrawer's height to large type's height
+		* Enlarge listActionDrawer's height to large type's height
+		*
+		* @private
 		*/
 		handleListActionOpenChanged: function (inSender, inEvent) {
 			if (!inEvent.open) {

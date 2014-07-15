@@ -1,54 +1,148 @@
 (function (enyo, scope) {
 	/**
-		_moon.ExpandableIntegerPicker_, which extends
-		[moon.ExpandableListItem](#moon.ExpandableListItem), is a drop-down picker
-		menu that prompts the user to make a selection from a range of integer-based
-		options.
-
-		The value of the currently selected item is available in the picker's _value_
-		property, while the content of the item is available in _content_.
-
-		When the picker is minimized, the content of the currently selected item is
-		displayed as subtext below the picker label.
+	* Fires when the currently selected item changes.
+	*
+	* _event.value_ contains the value of the currently selected item.
+	*
+	* _event.content_ contains the content of the currently selected item.
+	*
+	* @event moon.ExpandableIntegerPicker#event:onChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
 	*/
-	enyo.kind({
+
+	/**
+	* _moon.ExpandableIntegerPicker_, which extends
+	* [moon.ExpandableListItem]{@link moon.ExpandableListItem}, is a drop-down picker
+	* menu that prompts the user to make a selection from a range of integer-based
+	* options.
+	*
+	* The value of the currently selected item is available in the picker's _value_
+	* property, while the content of the item is available in
+	* {@link moon.ExpandableIntegerPicker#content}.
+	*
+	* When the picker is minimized, the content of the currently selected item is
+	* displayed as subtext below the picker label.
+	*
+	* @ui
+	* @class moon.ExpandableIntegerPicker
+	@ @extends moon.ExpandableListItem
+	* @public
+	*/
+	enyo.kind(
+		/** @lends moon.ExpandableIntegerPicker.prototype */ {
+
+		/**
+		* @private
+		*/
 		name: 'moon.ExpandableIntegerPicker',
+
+		/**
+		* @private
+		*/
 		kind: 'moon.ExpandableListItem',
-		//* @protected
+
+		/**
+		* @private
+		*/
 		classes: 'moon-expandable-integer-picker',
-		//* @public
+
+		/**
+		* @private
+		*/
 		events: {
+
 			/**
-				Fires when the currently selected item changes.
-
-				_inEvent.value_ contains the value of the currently selected item.
-
-				_inEvent.content_ contains the content of the currently selected item.
+			* {@link moon.ExpandableIntegerPicker#event:onChange}
 			*/
 			onChange: ''
 		},
-		published: {
-			//* Text to be displayed in the _currentValue_ control if no item is currently selected
+
+		/**
+		* @private
+		*/
+		published: /** @lends moon.ExpandableIntegerPicker.prototype */ {
+
+			/**
+			* Text to be displayed in the _currentValue_ control if no item is currently selected
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			noneText: '',
-			//* Initial value of the picker
+
+			/**
+			* Initial value of the picker
+			*
+			* @type {number}
+			* @default -1
+			* @public
+			*/
 			value: -1,
-			//* Minimum value of the picker
+
+			/**
+			* Minimum value of the picker
+			*
+			* @type {number}
+			* @default 0
+			* @public
+			*/
 			min: 0,
-			//* Maximum value of the picker
+
+			/**
+			* Maximum value of the picker
+			*
+			* @type {number}
+			* @default 9
+			* @public
+			*/
 			max: 9,
-			//* Amount to increment/decrement by
+
+			/**
+			* Amount to increment/decrement by
+			*
+			* @type {number}
+			* @default 1
+			* @public
+			*/
 			step: 1,
-			//* Unit/label to be appended to the end of the number
+
+			/**
+			* Unit/label to be appended to the end of the number
+			*
+			* @type {string}
+			* @default 'sec'
+			* @public
+			*/
 			unit: 'sec'
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		lockBottom: true,
+
+		/**
+		* @private
+		*/
 		autoCollapse: true,
 
+		/**
+		* @private
+		*/
 		handlers: {
 			requestScrollIntoView: 'requestScrollIntoView',
 			onRebuilt: 'requestPickerReflow'
 		},
+
+		/**
+		* @private
+		*/
 		components: [
 			{name: 'headerWrapper', kind: 'moon.Item', classes: 'moon-expandable-picker-header-wrapper', onSpotlightFocus: 'headerFocus', ontap: 'expandContract', components: [
 				// headerContainer required to avoid bad scrollWidth returned in RTL for certain text widths (webkit bug)
@@ -61,6 +155,10 @@
 				{name: 'picker', kind: 'moon.SimpleIntegerPicker', deferInitialization: true, onSelect: 'toggleActive', onActivate: 'activated'}
 			]}
 		],
+
+		/**
+		* @private
+		*/
 		bindings: [
 			{from: '.min', to: '.$.picker.min'},
 			{from: '.max', to: '.$.picker.max'},
@@ -71,27 +169,47 @@
 			{from: '.currentValueText', to: '.$.currentValue.content'},
 			{from: '.disabled', to: '.$.headerWrapper.disabled'}
 		],
+
+		/**
+		* @private
+		*/
 		computed: {
 			'showCurrentValue': ['open'],
 			'currentValueText': ['value', 'unit', 'noneText']
 		},
 
+		/**
+		* @private
+		*/
 		create: function () {
 			this.inherited(arguments);
 			this.requestPickerReflow();
 		},
 
+		/**
+		* @private
+		*/
 		requestPickerReflow: function () {
 			this._needsPickerReflow = true;
 		},
 
-		// Change handlers
+		/**
+		* Change handler
+		*
+		* @private
+		*/
 		valueChanged: function (inOld) {
 			if (this.value < this.min || this.value > this.max) {
 				this.value = inOld;
 			}
 			this.fireChangeEvent();
 		},
+
+		/**
+		* Change handler
+		*
+		* @private
+		*/
 		openChanged: function () {
 			this.inherited(arguments);
 			this.setActive(this.getOpen());
@@ -101,19 +219,38 @@
 			}
 		},
 
-		// Computed props
+		/**
+		* Computed prop
+		*
+		* @private
+		*/
 		showCurrentValue: function () {
 			return !this.open;
 		},
+
+		/**
+		* Computed prop
+		*
+		* @private
+		*/
 		currentValueText: function () {
 			return (this.value === '') ? this.noneText : this.value + ' ' + this.unit;
 		},
 
-		//* Sets _this.value_ to _this.$.clientInput.value_.
+		/**
+		* Sets {@link @moon.ExpandableIntegerPicker#value} to _this.$.clientInput.value_.
+		*
+		* @private
+		*/
 		updateValue: function () {
 			this.setValue(this.$.picker.getValue());
 		},
-		//* If open, closes and spots header. If closed, opens and unspots.
+
+		/**
+		* If open, closes and spots header. If closed, opens and unspots.
+		*
+		* @private
+		*/
 		toggleActive: function () {
 			if (this.getOpen()) {
 				this.setActive(false);
@@ -124,14 +261,28 @@
 				this.setActive(true);
 			}
 		},
-		//* Kills any _onActivate_ events coming from buttons in the SimplePicker.
+
+		/**
+		* Kills any {@link moon.SimplePicker#event:onActivate} events coming from buttons in the
+		* SimplePicker.
+		*
+		* @private
+		*/
 		activated: function (inSender, inEvent) {
 			return true;
 		},
-		//* Fires an _onChange_ event.
+
+		/**
+		* @fires moon.ExpandableIntegerPicker#event:onChange
+		* @private
+		*/
 		fireChangeEvent: function () {
 			this.doChange({value: this.value, content: this.content});
 		},
+
+		/**
+		* @private
+		*/
 		spotlightDown: function (inSender, inEvent) {
 			if (this.getLockBottom() && (inEvent.originator === this.$.picker) && this.getOpen()) {
 				return true;

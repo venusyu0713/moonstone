@@ -1,92 +1,193 @@
 (function (enyo, scope) {
 	/**
-		_moon.ExpandablePicker_, which extends
-		[moon.ExpandableListItem](#moon.ExpandableListItem), is a drop-down picker
-		menu that solicits a choice from the user. The picker's child components,
-		which are instances of [moon.CheckboxItem](#moon.CheckboxItem) by default,
-		provide the options for the picker.
-
-			{kind: 'moon.ExpandablePicker', noneText: 'None Selected', content: 'Choose City',
-				components: [
-					{content: 'San Francisco'},
-					{content: 'Boston'},
-					{content: 'Tokyo'}
-				]
-			}
-
-		The currently selected item is available in the picker's _selected_ property
-		and may be accessed in the normal manner, by calling _get('selected')_ and
-		_set('selected', &lt;value&gt;)_. Similarly, the index of the current selection is
-		available in _selectedIndex_. When the multipleSelection property is set to true,
-		selected returns an array of selected items, and selectedIndex returns an array of
-		selected indexes.
-
-		The _onChange_ event is fired when the selected item changes, and contains the
-		following properties:
-
-			{
-				selected: [object Object],	// Reference to selected item, or array of items
-				content: 'San Francisco',	// Content of selected item, or items
-				index: 1							// Index of selected item, or array of indexes
-			}
-
-		The picker options may be modified programmatically in the standard manner, by
-		calling _createComponent().render()_ or _destroy()_.
-
-			// Add new items to picker
-			this.$.expandablePicker.createComponent({'New York'}).render();
-			this.$.expandablePicker.createComponent({'London'}).render();
-
-			// Remove currently selected item from picker
-			this.$.expandablePicker.getSelected().destroy();
-
-		When the picker is minimized, the content of the currently selected item is
-		displayed as subtext below the picker label. In the multipleSelection case,
-		the content of all selected items is displayed as a comma separated list
+	* Fires when the currently selected item changes.
+	*
+	* _event.selected_ contains a reference to the currently selected item,
+	* or (when multipleSelection is true), an array of selected items.
+	*
+	* _event.content_ contains the content of the currently selected item,
+	* or (when multipleSelection is true), a comma separated list of selected items content.
+	*
+	* _event.index_ contains the index of the currently selected item,
+	* or (when multipleSelection is true), an array of indexes.
+	*
+	* @event moon.ExpandablePicker#event:onChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
 	*/
-	enyo.kind({
+
+	/**
+	* _moon.ExpandablePicker_, which extends
+	* [moon.ExpandableListItem]{@link moon.ExpandableListItem}, is a drop-down picker
+	* menu that solicits a choice from the user. The picker's child components,
+	* which are instances of [moon.CheckboxItem]{@link moon.CheckboxItem} by default,
+	* provide the options for the picker.
+	*
+	* ```
+	* {kind: 'moon.ExpandablePicker', noneText: 'None Selected', content: 'Choose City',
+	* components: [
+	* 	{content: 'San Francisco'},
+	* 	{content: 'Boston'},
+	* 	{content: 'Tokyo'}
+	* ]}
+	* ```
+	*
+	* The currently selected item is available in the picker's {@link moon.ExpandablePicker#selected}
+	* property and may be accessed in the normal manner, by calling _get('selected')_ and
+	* _set('selected', &lt;value&gt;)_. Similarly, the index of the current selection is
+	* available in {@link moon.ExpandablePicker#selectedIndex}. When the multipleSelection property
+	* is set to true, selected returns an array of selected items, and selectedIndex returns an
+	* array of selected indexes.
+	*
+	* The {@link moon.ExpandablePicker#event:onChange} event is fired when the selected item changes,
+	* and contains the following properties:
+	*
+	* ```
+	* {
+	* 	selected: [object Object],	// Reference to selected item, or array of items
+	* 	content: 'San Francisco',	// Content of selected item, or items
+	* 	index: 1							// Index of selected item, or array of indexes
+	* }
+	* ```
+	*
+	* The picker options may be modified programmatically in the standard manner, by
+	* calling _createComponent().render()_ or _destroy()_.
+	*
+	* ```
+	* // Add new items to picker
+	* this.$.expandablePicker.createComponent({'New York'}).render();
+	* this.$.expandablePicker.createComponent({'London'}).render();
+	*
+	* // Remove currently selected item from picker
+	* this.$.expandablePicker.getSelected().destroy();
+	* ```
+	*
+	* When the picker is minimized, the content of the currently selected item is
+	* displayed as subtext below the picker label. In the multipleSelection case,
+	* the content of all selected items is displayed as a comma separated list
+	*
+	* @ui
+	* @class moon.ExpandablePicker
+	* @extends moon.ExpandableListItem
+	* @public
+	*/
+	enyo.kind(
+		/** @lends moon.ExpandablePicker.prototype */ {
+
+		/**
+		* @private
+		*/
 		name: 'moon.ExpandablePicker',
+
+		/**
+		* @private
+		*/
 		kind: 'moon.ExpandableListItem',
-		//* @protected
+
+		/**
+		* @private
+		*/
 		classes: 'moon-expandable-picker',
-		//* @public
+
+		/**
+		* @private
+		*/
 		events: {
 			/**
-				Fires when the currently selected item changes.
-
-				_inEvent.selected_ contains a reference to the currently selected item,
-				or (when multipleSelection is true), an array of selected items.
-
-				_inEvent.content_ contains the content of the currently selected item,
-				or (when multipleSelection is true), a comma separated list of selected items content.
-
-				_inEvent.index_ contains the index of the currently selected item,
-				or (when multipleSelection is true), an array of indexes.
+			* {@link moon.ExpandablePicker#event:onChange}
 			*/
 			onChange: ''
 		},
-		published: {
-			//* Reference to currently selected item, if any,
-			//* or (when multipleSelection is true), an array of selected items.
+
+		/**
+		* @private
+		*/
+		published: /** @lends moon.ExpandablePicker.prototype */ {
+
+			/**
+			* Reference to currently selected item, if any,
+			* or (when multipleSelection is true), an array of selected items.
+			*
+			* @type {Object | Array}
+			* @default null
+			* @public
+			*/
 			selected: null,
-			//* Index of currently selected item, if any,
-			//* or (when multipleSelection is true), an array of selected indexes.
+
+			/**
+			* Index of currently selected item, if any,
+			* or (when multipleSelection is true), an array of selected indexes.
+			*
+			* @type {Number | Array}
+			* @default -1
+			* @public
+			*/
 			selectedIndex: -1,
-			//* Text to be displayed in the _currentValue_ control if no item is currently selected
+
+			/**
+			* Text to be displayed in the _currentValue_ control if no item is currently selected
+			*
+			* @type {String}
+			* @default ''
+			* @public
+			*/
 			noneText: '',
-			//* Text to be displayed when the drawer is opened
+
+			/**
+			* Text to be displayed when the drawer is opened
+			*
+			* @type {String}
+			* @default null
+			* @public
+			*/
 			helpText: null,
-			//* If true, auto collapse when an item is selected
+
+			/**
+			* If true, auto collapse when an item is selected
+			*
+			* @type {Boolean}
+			* @default true
+			* @public
+			*/
 			autoCollapseOnSelect: true,
-			//* If true, allow multiple selections.
+
+			/**
+			* If true, allow multiple selections.
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
+			*/
 			multipleSelection: false
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		autoCollapse: true,
+
+		/**
+		* @private
+		*/
 		lockBottom: true,
 
+		/**
+		* @private
+		*/
 		defaultKind: 'moon.CheckboxItem',
+
+		/**
+		* @private
+		*/
 		selectAndCloseDelayMS: 600,
+
+		/**
+		* @private
+		*/
 		components: [
 			{name: 'headerWrapper', kind: 'moon.Item', classes: 'moon-expandable-picker-header-wrapper', onSpotlightFocus: 'headerFocus', ontap: 'expandContract', components: [
 				// headerContainer required to avoid bad scrollWidth returned in RTL for certain text widths (webkit bug)
@@ -100,11 +201,19 @@
 				{name: 'helpText', kind:'moon.BodyText', canGenerate: false, classes: 'moon-expandable-picker-help-text'}
 			]}
 		],
+
+		/**
+		* @private
+		*/
 		bindings: [
 			{from: '.allowHtml', to: '.$.header.allowHtml'},
 			{from: '.allowHtml', to: '.$.currentValue.allowHtml'},
 			{from: '.disabled', to: '.$.headerWrapper.disabled'}
 		],
+
+		/**
+		* @private
+		*/
 		create: function () {
 			this.inherited(arguments);
 			if (this.multipleSelection) {
@@ -118,10 +227,18 @@
 			this.helpTextChanged();
 			this.openChanged();
 		},
+
+		/**
+		* @private
+		*/
 		rendered: function () {
 			this.inherited(arguments);
 			this.isRendered = true;
 		},
+
+		/**
+		* @private
+		*/
 		multiSelectCurrentValue: function () {
 			if (!this.multipleSelection) {
 				return;
@@ -141,7 +258,14 @@
 			}
 			return str;
 		},
-		//* When the _selected_ control changes, updates _checked_ values appropriately and fires an _onChange_ event.
+
+		/**
+		* When the {@link moon.ExpandablePicker#selected} control changes, updates
+		* {@link moon.ExpandablePicker#checked} values appropriately and fires an _onChange_ event.
+		*
+		* @fires moon.ExpandablePicker#event:onChange
+		* @private
+		*/
 		selectedChanged: function (inOldValue) {
 			var selected = this.getSelected(),
 			controls = this.getClientControls(),
@@ -190,7 +314,13 @@
 				}
 			}
 		},
-		//* When the _selectedIndex_ changes, calls _this.setChecked()_ on the appropriate control.
+
+		/**
+		* When the {@link moon.ExpandablePicker#selectedIndex} changes, calls
+		* {@link moon.ExpandablePicker#setChecked} on the appropriate control.
+		*
+		* @private
+		*/
 		selectedIndexChanged: function () {
 			var selected = this.getSelected(),
 			controls = this.getClientControls(),
@@ -223,7 +353,12 @@
 				}
 			}
 		},
-		//* If there is no selected item, uses _this.noneText_ as current value.
+
+		/**
+		* If there is no selected item, uses {link @moon.ExpandablePicker#noneText} as current value.
+		*
+		* @private
+		*/
 		noneTextChanged: function () {
 			if (this.multipleSelection) {
 				if (!this.getSelected().length && !this.getSelectedIndex().length) {
@@ -235,13 +370,23 @@
 				}
 			}
 		},
-		//* When _this.open_ changes, shows/hides _this.$.currentValue_.
+
+		/**
+		* When {@link moon.ExpandablePicker#open} changes, shows/hides _this.$.currentValue_.
+		*
+		* @private
+		*/
 		openChanged: function () {
 			this.inherited(arguments);
 			this.$.currentValue.setShowing(!this.open);
 			this.setActive(this.getOpen());
 		},
-		//* When drawer is opened/closed, shows/hides _this.$.helpText.
+
+		/**
+		* When drawer is opened/closed, shows/hides _this.$.helpText.
+		*
+		* @private
+		*/
 		helpTextChanged: function () {
 			if (this.helpText !== null && !this.$.helpText.canGenerate) {
 				this.generateHelpText();
@@ -249,6 +394,11 @@
 			this.$.helpText.setContent(this.helpText);
 			this.$.helpText.setShowing(!!this.helpText);
 		},
+
+		/**
+		* @method
+		* @private
+		*/
 		destroy: enyo.inherit(function (sup) {
 			return function () {
 				// When the expandablePicker itself is going away, take note so we don't try and do single-picker option
@@ -257,6 +407,11 @@
 				sup.apply(this, arguments);
 			};
 		}),
+
+		/**
+		* @method
+		* @private
+		*/
 		removeControl: enyo.inherit(function (sup) {
 			return function (inControl) {
 				// Skip extra work during panel destruction.
@@ -282,15 +437,22 @@
 				sup.apply(this, arguments);
 			};
 		}),
+
+		/**
+		* @private
+		*/
 		generateHelpText: function () {
 			this.$.helpText.canGenerate = true;
 			this.$.helpText.render();
 		},
-		/*
-			When the picker is initialized, looks for any items with an _active: true_
-			flag; if one is found, it is set as the currently selected item. This is
-			done without triggering an _onChange_ event, as it happens during
-			initialization.
+
+		/**
+		* When the picker is initialized, looks for any items with an _active: true_
+		* flag; if one is found, it is set as the currently selected item. This is
+		* done without triggering an _onChange_ event, as it happens during
+		* initialization.
+		*
+		* @private
 		*/
 		initializeActiveItem: function () {
 			var controls = this.getClientControls();
@@ -316,7 +478,12 @@
 				this.$.currentValue.setContent(this.multiSelectCurrentValue());
 			}
 		},
-		//* When an item is chosen, marks it as checked and closes the picker.
+
+		/**
+		*  When an item is chosen, marks it as checked and closes the picker.
+		*
+		* @private
+		*/
 		activated: function (inSender, inEvent) {
 			var toggledControl = inEvent && inEvent.toggledControl, index;
 
@@ -349,14 +516,25 @@
 
 			return true;
 		},
-		//* Closes drawer and selects header.
+
+		/**
+		* Closes drawer and selects header.
+		*
+		* @private
+		*/
 		selectAndClose: function () {
 			this.setActive(false);
 			if (!enyo.Spotlight.getPointerMode() && enyo.Spotlight.getCurrent() && enyo.Spotlight.getCurrent().isDescendantOf(this)) {
 				enyo.Spotlight.spot(this.$.headerWrapper);
 			}
 		},
-		//* Fires an _onChange_ event.
+
+		/**
+		* Fires an _onChange_ event.
+		*
+		* @fires moon.ExpandablePicker#event:onChange
+		* @private
+		*/
 		fireChangeEvent: function () {
 			var contentStr = (this.multipleSelection) ? this.multiSelectCurrentValue() : this.getSelected().getContent();
 			this.doChange({
@@ -365,6 +543,10 @@
 				index: this.getSelectedIndex()
 			});
 		},
+
+		/**
+		* @private
+		*/
 		multipleSelectionChanged : function (inOldValue) {
 			if (this.multipleSelection) {
 				if (this.selected) {

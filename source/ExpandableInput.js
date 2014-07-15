@@ -1,35 +1,101 @@
 (function (enyo, scope) {
 	/**
-		_moon.ExpandableInput_, which extends
-		[moon.ExpandableListItem](#moon.ExpandableListItem), is a drop-down input that
-		prompts the user to enter text.
+	* Fires when the current text changes.
+	*
+	* _event.value_ contains the value of the input.
+	*
+	* @event moon.ExpandableInput#event:onChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
 	*/
-	enyo.kind({
-		name: 'moon.ExpandableInput',
-		kind: 'moon.ExpandableListItem',
-		//* @protected
-		classes: 'moon-expandable-input',
-		//* @public
-		events: {
-			/**
-				Fires when the current text changes.
 
-				_inEvent.value_ contains the value of the input.
-			*/
+	/**
+	* _moon.ExpandableInput_, which extends
+	* [moon.ExpandableListItem]{@link moon.ExpandableListItem}, is a drop-down input that
+	* prompts the user to enter text.
+	*
+	* @ui
+	* @class moon.ExpandableInput
+	* @extends moon.ExpandableListItem
+	* @public
+	*/
+	enyo.kind(
+		/** @lends moon.ExpandableInput.prototype */ {
+
+		/**
+		* @private
+		*/
+		name: 'moon.ExpandableInput',
+
+		/**
+		* @private
+		*/
+		kind: 'moon.ExpandableListItem',
+
+		/**
+		* @private
+		*/
+		classes: 'moon-expandable-input',
+
+		/**
+		* @private
+		*/
+		events: {
+
+			/** {@link moon.ExpandableInput#event:onChange} */
 			onChange: ''
 		},
-		published: {
-			//* Text to be displayed in the _currentValue_ control if no item is currently selected
+
+		/**
+		* @private
+		*/
+		published: /** @lends moon.ExpandableInput.prototype */ {
+
+			/**
+			* Text to be displayed in the _currentValue_ control if no item is currently selected
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			noneText: '',
-			//* Text to be displayed in the input if no text has been entered
+
+			/**
+			* Text to be displayed in the input if no text has been entered
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			placeholder: '',
-			//* Initial value of the input
+
+			/**
+			* Initial value of the input
+			*
+			* @type {string}
+			* @default ''
+			* @public
+			*/
 			value: ''
 		},
-		//* @protected
+
+		/**
+		* @private
+		*/
 		autoCollapse: true,
+
+		/**
+		* @private
+		*/
 		lockBottom: false,
 
+		/**
+		* @private
+		*/
 		components: [
 			{name: 'headerWrapper', kind: 'moon.Item', classes: 'moon-expandable-picker-header-wrapper', onSpotlightFocus: 'headerFocus', ondown: 'headerDown', ontap: 'expandContract', components: [
 				// headerContainer required to avoid bad scrollWidth returned in RTL for certain text widths (webkit bug)
@@ -44,6 +110,10 @@
 				]}
 			]}
 		],
+
+		/**
+		* @private
+		*/
 		bindings: [
 			{from: '.value', to: '.$.clientInput.value', oneWay: false},
 			{from: '.placeholder', to: '.$.clientInput.placeholder'},
@@ -51,18 +121,36 @@
 			{from: '.currentValueText', to: '.$.currentValue.content'},
 			{from: '.disabled', to: '.$.headerWrapper.disabled'}
 		],
+
+		/**
+		* @private
+		*/
 		computed: {
 			'showCurrentValue': ['open', 'value', 'noneText'],
 			'currentValueText': ['value', 'noneText']
 		},
 
-		// Computed props
+		/**
+		* Computed prop
+		*
+		* @private
+		*/
 		showCurrentValue: function () {
 			return !this.open && this.currentValueText() !== '';
 		},
+
+		/**
+		* Computed prop
+		*
+		* @private
+		*/
 		currentValueText: function () {
 			return (this.value === '') ? this.noneText : this.value;
 		},
+
+		/**
+		* @private
+		*/
 		expandContract: function () {
 			if (this.disabled) {
 				return true;
@@ -73,6 +161,10 @@
 				this.toggleActive();
 			}
 		},
+
+		/**
+		* @private
+		*/
 		toggleActive: function () {
 			if (this.getOpen()) {
 				this.setActive(false);
@@ -83,37 +175,63 @@
 				enyo.Spotlight.freeze();
 			}
 		},
-		//* Focuses the _moon.Input_ when the input decorator receives focus.
+
+		/**
+		* Focuses the {@link moon.Input} when the input decorator receives focus.
+		*
+		* @private
+		*/
 		inputFocus: function (inSender, inEvent) {
 			var direction = inEvent && inEvent.dir;
 			if (this.getOpen() && direction) {
 				this.focusInput();
 			}
 		},
-		//* value should submit if user clicks outside control. We check for 'down' to make sure not to contract on mousemove
+
+		/**
+		* value should submit if user clicks outside control. We check for 'down' to make sure not to
+		* contract on mousemove
+		*
+		* @private
+		*/
 		inputBlur: function (inSender, inEvent) {
 			if (this.$.clientInput.hasFocus() && enyo.Spotlight.getPointerMode() && enyo.Spotlight.getLastEvent().type === 'down') {
 				this.toggleActive();
 			}
 		},
+
+		/**
+		* @private
+		*/
 		inputKeyUp: function (inSender, inEvent) {
 			if (inEvent.keyCode === 13) {
 				this.closeDrawerAndHighlightHeader();
 			}
 		},
+
+		/**
+		* @private
+		*/
 		headerDown: function () {
 			enyo.Spotlight.unfreeze();
 		},
+
 		/**
-			Focuses the input field if navigating down from the header while the drawer
-			is open.
+		* Focuses the input field if navigating down from the header while the drawer is open.
+		*
+		* @private
 		*/
 		spotlightDown: function (inSender, inEvent) {
 			if (inEvent.originator === this.$.headerWrapper && this.getOpen()) {
 				this.focusInput();
 			}
 		},
-		//* Focuses the input field.
+
+		/**
+		* Focuses the input field.
+		*
+		* @private
+		*/
 		focusInput: function () {
 			this.$.clientInput.focus();
 			// Force cursor to end of text. We were sometimes seeing the
@@ -122,10 +240,13 @@
 			// cursor).
 			this.$.clientInput.hasNode().selectionStart = this.value.length;
 		},
+
 		/**
-			If _this.lockBottom_ is _true_, don't allow user to navigate down from the
-			input field. If _this.lockBottom_ is _false_, close drawer and return true
-			to keep spotlight on header.
+		* If {@link moon.ExpandableInput#lockBottom} is _true_, don't allow user to navigate down from
+		* the input field. If {@link moon.ExpandableInput#lockBottom} is _false_, close drawer and
+		* return true to keep spotlight on header.
+		*
+		* @private
 		*/
 		inputDown: function (inSender, inEvent) {
 			if (this.getLockBottom()) {
@@ -135,6 +256,10 @@
 			}
 			return true;
 		},
+
+		/**
+		* @private
+		*/
 		drawerAnimationEnd: function () {
 			enyo.Spotlight.unfreeze();
 			if (this.getOpen()) {
@@ -142,12 +267,15 @@
 			}
 			this.inherited(arguments);
 		},
+
 		/**
-			We manually set pointer mode to false as it was seemingly the
-			least harmful method to re-highlight the header after the drawer
-			closes. The other options had side effects of resetting the
-			current spotted control to the root, or requiring a double-press to
-			subsequently 5-way move.
+		* We manually set pointer mode to false as it was seemingly the
+		* least harmful method to re-highlight the header after the drawer
+		* closes. The other options had side effects of resetting the
+		* current spotted control to the root, or requiring a double-press to
+		* subsequently 5-way move.
+		*
+		* @private
 		*/
 		closeDrawerAndHighlightHeader: function () {
 			enyo.Spotlight.setPointerMode(false);
@@ -156,4 +284,5 @@
 			this.toggleActive();
 		}
 	});
+
 })(enyo, this);
