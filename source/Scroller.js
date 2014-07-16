@@ -78,7 +78,7 @@ enyo.kind({
 	//* If true, scroll events are not allowed to propagate
 	preventScrollPropagation: false,
 	//* Default to moon.ScrollStrategy
-	strategyKind: "moon.ScrollStrategy",_
+	strategyKind: "moon.ScrollStrategy",
 	/**
 		Scrolls until _inControl_ is in view. If _inScrollFullPage_ is set, scrolls
 		until the edge of _inControl_ is aligned with the edge of the visible scroll
