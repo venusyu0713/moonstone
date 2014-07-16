@@ -1,6 +1,7 @@
 (function (enyo, scope) {
 	/**
-	* Custom input event to allow apps to differentiate between inputs and header inputs
+	* Custom input event to allow apps to differentiate between inputs and header inputs. See
+	* {@link enyo.Input#event:oninput} for more event information.
 	*
 	* @event moon.Header#event:onInputHeaderInput
 	* @type {Object}
@@ -13,7 +14,7 @@
 
 	/**
 	* Custom input change event to allow apps to differentiate between input changes and header
-	* input changes
+	* input changes. See {@link enyo.Input#event:onchange} for more event information.
 	*
 	* @event moon.Header#event:onInputHeaderChange
 	* @type {Object}
@@ -30,6 +31,7 @@
 	*
 	* @ui
 	* @class moon.Header
+	* @extends enyo.Control
 	* @mixes moon.MarqueeSupport
 	* @public
 	 */
@@ -40,6 +42,11 @@
 		* @private
 		*/
 		name: 'moon.Header',
+
+		/**
+		* @private
+		*/
+		kind: 'enyo.Control',
 
 		/**
 		* @private
@@ -114,7 +121,7 @@
 			* This may be a string referring a single background image, or an array of
 			* strings referring to multiple background images.
 			*
-			* @type {String}
+			* @type {(String|String[])}
 			* @default null
 			* @public
 			*/
@@ -129,7 +136,7 @@
 			* multiple background images. The order of items should be the same as in
 			* {@link moon.Header#backgroundSrc}.
 			*
-			* @type {String}
+			* @type {(String|String[])}
 			* @default 'top right'
 			* @public
 			*/

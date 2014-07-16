@@ -3,7 +3,7 @@
 	* @typedef {Object} moon.BreadcrumbArranger~PanelInfoObject
 	* @property {Boolean} breadcrumb - reports whether panel is in breadcrumb (collapsed) form
 	* @property (Boolean) offscreen - reports whether a panel is is offscreen
-	* public
+	* @public
 	*/
 
 	/**
