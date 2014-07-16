@@ -57,7 +57,7 @@ enyo.kind({
 			this value to increase the distance scrolled when the pagination buttons
 			are held.
 		*/
-		paginationScrollMultiplier: 8,
+		paginationScrollMultiplier: 8,_
 		/**
 			When true, the scroll wheel moves spotlight focus up/down through the
 			scroller when in 5-way mode. (In pointer mode, the scroll wheel always
@@ -78,7 +78,7 @@ enyo.kind({
 	//* If true, scroll events are not allowed to propagate
 	preventScrollPropagation: false,
 	//* Default to moon.ScrollStrategy
-	strategyKind: "moon.ScrollStrategy",
+	strategyKind: "moon.ScrollStrategy",_
 	/**
 		Scrolls until _inControl_ is in view. If _inScrollFullPage_ is set, scrolls
 		until the edge of _inControl_ is aligned with the edge of the visible scroll

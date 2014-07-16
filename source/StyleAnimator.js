@@ -24,9 +24,10 @@
 	 */
 
 	/**
-	 * _enyo.StyleAnimator_ is a basic animation component.  Call _play()_ to start
+	 * (@link enyo.StyleAnimator) is a basic animation component.  Call (@link enyo.StyleAnimator#play()) to start
 	 * the animation.  The animation will run for the period of time (in milliseconds)
-	 * specified by its _duration_, subject to its _timingFunction_ and _direction_.
+	 * specified by its (@link enyo.StyleAnimator#duration), subject to its @link enyo.StyleAnimator#timingFunction)
+	 * and (@link enyo.StyleAnimator#direction).
 	 *
 	 * @class enyo.StyleAnimator
 	 * @extends enyo.Component
@@ -106,7 +107,7 @@
 
 		/**
 		 * Returns animation object reflecting the passed-in properties, while also adding it to the
-		 * _animations_ array.
+		 * (@link enyo.StyleAnimator#animations) array.
 		 *
 		 * @public
 		 */

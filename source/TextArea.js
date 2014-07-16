@@ -1,7 +1,7 @@
 (function (enyo, scope) {
 	/**
-	 * _moon.TextArea_ is a Moonstone-styled TextArea control, derived from
-	 * [enyo.TextArea](@link enyo.TextArea). Typically, a _moon.TextArea_ is placed inside
+	 * (@link moon.TextArea) is a Moonstone-styled TextArea control, derived from
+	 * [enyo.TextArea](@link enyo.TextArea). Typically, a (@link moon.TextArea) is placed inside
 	 * a [moon.InputDecorator](@link moon.InputDecorator), which provides styling, e.g.:
 	 *
 	 * ```

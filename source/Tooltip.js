@@ -1,6 +1,6 @@
 (function (enyo, scope) {
 	/**
-	 * _moon.Tooltip_ is a popup that works in conjunction with
+	 * (@link moon.Tooltip) is a popup that works in conjunction with
 	 * [moon.TooltipDecorator](@link moon.TooltipDecorator). It automatically displays a
 	 * tooltip when the user hovers over the decorator for a given period of time.
 	 * The tooltip is positioned around the decorator where there is available window
@@ -13,7 +13,7 @@
 	 * ]}
 	 * ```
 	 *
-	 * You may force the tooltip to appear by calling its _show()_ method.
+	 * You may force the tooltip to appear by calling its (@link moon.Tooltip#show()) method.
 	 *
 	 * @class moon.Tooltip
 	 * @extends enyo.Popup
@@ -43,7 +43,7 @@
 		 */
 		published: {
 			/**
-			 * This value overrides the default value of (@link autoDismiss) inherited from (@link enyo.Popup). If true, the
+			 * This value overrides the default value of (@link enyo.Popup#autoDismiss) inherited from (@link enyo.Popup). If true, the
 			 * Tooltip will hide when the user taps outside of it or presses ESC. Note that this property only
 			 * affects behavior when the Tooltip is used independently--not when it is used with TooltipDecorator.
 			 *

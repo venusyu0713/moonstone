@@ -1,6 +1,6 @@
 (function (enyo, scope) {
 	/**
-	 * A control that activates a [moon.Tooltip](#moon.Tooltip). It surrounds a
+	 * A control that activates a [moon.Tooltip](@link moon.Tooltip). It surrounds a
 	 * control such as a button and displays the tooltip when the control generates
 	 * an _onEnter_ event:
 	 *
@@ -22,9 +22,9 @@
 	 * ]}
 	 * ```
 	 *
-	 * Automatic hiding and showing of tooltips may be disabled by calling _mute()_ or by bubbling the
-	 * _onRequestMuteTooltip_ event; it may be re-enabled by calling _unmute()_ or by bubbling the
-	 * _onRequestUnmuteTooltip_ event.
+	 * Automatic hiding and showing of tooltips may be disabled by calling (@link moon.TooltipDecorator#mute()) or by bubbling the
+	 * `onRequestMuteTooltip` event; it may be re-enabled by calling (@link moon.TooltipDecorator#unmute()) or by bubbling the
+	 * `onRequestUnmuteTooltip` event.
 	 *
 	 * @class moon.TooltipDecorator
 	 * @extends enyo.Control
