@@ -13,7 +13,7 @@
 	* the [onSeek]{@link enyo.VideoTransportSlider#event:onSeek} [event]{@glossary event} is fired.
 	*
 	* @typedef {Object} moon.VideoTransportSlider~OnSeekEventObject
-	* @property {Number} [value] - The position to seek to.
+	* @property {Number} value - The position to seek to.
 	* @public
 	*/
 
