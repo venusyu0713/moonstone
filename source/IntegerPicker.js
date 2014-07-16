@@ -1,39 +1,112 @@
 (function (enyo, scope) {
 	/**
-		_moon.IntegerPicker_ is a control that displays a list of integers
-		ranging from _min_ to _max_, soliciting a choice from the user.
-
-		To initialize the picker to a particular integer, set the _value_ property to
-		that integer:
-
-			{kind: 'moon.IntegerPicker', noneText: 'None Selected',
-				content: 'Choose a Number', min: 0, max: 25, value: 5}
-
-		The picker may be changed programmatically by modifying the published
-		properties _value_,	_min_, or _max_ in the normal manner, by calling _set()_.
+	* Fires when the currently selected value changes (i.e., when either
+	* _topOverlay_ or _bottomOverlay_ is tapped).
+	*
+	* _event.name_ contains the name of the IntegerPicker instance.
+	*
+	* _event.value_ contains the current value of the picker.
+	*
+	* @event moon.IntegerPicker#event:onChange
+	* @type {Object}
+	* @property {Object} sender - The [component]{@link enyo.Component} that most recently
+	*	propagated the [event]{@link external:event}.
+	* @property {Object} event - An [object]{@link external:Object} containing
+	*	[event]{@link external:event} information.
+	* @public
 	*/
-	enyo.kind({
+
+	/**
+	* _moon.IntegerPicker_ is a control that displays a list of integers
+	* ranging from {@link moon.IntegerPicker#min} to {@link moon.IntegerPicker#max},
+	* soliciting a choice from the user.
+	*
+	* To initialize the picker to a particular integer, set the _value_ property to
+	* that integer:
+	*
+	* ```
+	* {kind: 'moon.IntegerPicker', noneText: 'None Selected',
+	* 	content: 'Choose a Number', min: 0, max: 25, value: 5}
+	* ```
+	*
+	* The picker may be changed programmatically by modifying the published
+	* properties {@link moon.IntegerPicker#value}, {@link moon.IntegerPicker#min}, or
+	* {@linkmoon.IntegerPicker#max} in the normal manner, by calling {@link enyo.Object#set}.
+	*
+	* @ui
+	* @class moon.IntegerPicker
+	* @extends enyo.Control
+	* @public
+	*/
+	enyo.kind(
+		/** @lends moon.IntegerPicker.prototype */ {
+
+	 	/**
+	 	* @private
+	 	*/
 		name: 'moon.IntegerPicker',
-		//* @protected
+
+	 	/**
+	 	* @private
+	 	*/
 		classes: 'moon-scroll-picker-container',
-		//* @public
-		published: {
-			//* Current value of the picker
-			value: null,
-			//* Minimum value of the picker
-			min: 0,
-			//* Maximum value of the picker
-			max: 9,
-			//* If a number is specified, the picker value is displayed as this many
-			//* zero-filled digits
-			digits: null,
+
+	 	/**
+	 	* @private
+	 	*/
+		published: /** @lends moon.IntegerPicker.prototype */ {
+
 			/**
-				When true, incrementing beyond _max_ will wrap to _min_, and decrementing
-				beyond _min_ will wrap to _max_
+			* Current value of the picker
+			*
+			* @type {Number}
+			* @default null
+			* @public
+			*/
+			value: null,
+
+			/**
+			* Minimum value of the picker
+			*
+			* @type {Number}
+			* @default 0
+			* @public
+			*/
+			min: 0,
+
+			/**
+			* Maximum value of the picker
+			*
+			* @type {Number}
+			* @default 9
+			* @public
+			*/
+			max: 9,
+
+			/**
+			* If a number is specified, the picker value is displayed as this many
+			* zero-filled digits
+			*
+			* @type {Number}
+			* @default null
+			* @public
+			*/
+			digits: null,
+
+			/**
+			* When true, incrementing beyond {@link moon.IntegerPicker#max} will wrap to
+			* {@link moon.IntegerPicker#min}, and decrementing beyond min will wrap to max
+			*
+			* @type {Boolean}
+			* @default false
+			* @public
 			*/
 			wrap: false
 		},
-		//* @protected
+
+	 	/**
+	 	* @private
+	 	*/
 		handlers: {
 			onSpotlightUp:'next',
 			onSpotlightDown:'previous',
@@ -42,22 +115,32 @@
 			onSpotlightScrollDown:'previous',
 			onmousewheel:'mousewheel'
 		},
-		//* @public
+
+	 	/**
+	 	* @private
+	 	*/
 		events: {
 			/**
-				Fires when the currently selected value changes (i.e., when either
-				_topOverlay_ or _bottomOverlay_ is tapped).
-
-				_inEvent.name_ contains the name of the IntegerPicker instance.
-
-				_inEvent.value_ contains the current value of the picker.
+			* {@link moon.IntegerPicker#event:onChange}
 			*/
 			onChange: ''
 		},
-		//* @protected
+
+	 	/**
+	 	* @private
+	 	*/
 		spotlight: true,
-		//* Cache scroll bounds so we don't have to run _stop()_ every time we need them
+
+	 	/**
+		* Cache scroll bounds so we don't have to run {@link enyo.Scroller#stop} every time we need them
+		*
+	 	* @private
+	 	*/
 		scrollBounds: {},
+
+	 	/**
+	 	* @private
+	 	*/
 		components: [
 			{name:'topOverlay', ondown:'downNext', onholdpulse:'next', classes:'moon-scroll-picker-overlay-container top top-image', components:[
 				{classes:'moon-scroll-picker-overlay top'},
@@ -73,13 +156,26 @@
 				{classes: 'moon-scroll-picker-taparea'}
 			]}
 		],
-		//* @protected
-		scrollFrame: 3, // parameter that determines scroll math simulation speed
+
+	 	/**
+		* parameter that determines scroll math simulation speed
+		*
+	 	* @private
+	 	*/
+		scrollFrame: 3,
+
+	 	/**
+	 	* @private
+	 	*/
 		create: function (){
 			this.inherited(arguments);
 			this.verifyValue();
 			this.updateOverlays();
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		rendered: function (){
 			this.inherited(arguments);
 			this.rangeChanged();
@@ -87,12 +183,24 @@
 			this.$.scroller.getStrategy().setFixedTime(false);
 			this.$.scroller.getStrategy().setFrame(this.scrollFrame);
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		getVerifiedValue: function () {
 			return this.value >= this.min && this.value <= this.max ? this.value : this.min;
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		verifyValue: function () {
 			this.value = this.getVerifiedValue();
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		refreshScrollState: function () {
 			this.updateScrollBounds();
 			var node = this.$.repeater.fetchRowNode(this.value - this.min);
@@ -100,6 +208,10 @@
 				this.$.scroller.scrollToNode(node);
 			}
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		setupItem: function (inSender, inEvent) {
 			var index = inEvent.index;
 			var content = index + this.min;
@@ -108,6 +220,10 @@
 			}
 			this.$.item.setContent(content);
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		rangeChanged: function () {
 			this.verifyValue();
 			this.$.repeater.setCount(this.max-this.min+1);
@@ -120,10 +236,13 @@
 				}
 			}));
 		},
-		/**
-			fail-safe design.
-			If out boundary value is assigned, adjust boundary.
-		*/
+
+	 	/**
+		* fail-safe design.
+		* If out boundary value is assigned, adjust boundary.
+		*
+	 	* @private
+	 	*/
 		valueChanged: function (inOld) {
 			if (this.value < this.min) {
 				this.setMin(this.value);
@@ -137,16 +256,33 @@
 			}
 			this.updateOverlays();
 		},
-		//prevent scroller dragging
+
+	 	/**
+		* prevent scroller dragging
+		*
+	 	* @private
+	 	*/
 		dragstart: function (inSender, inEvent) {
 			return true;
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		minChanged: function () {
 			this.rangeChanged();
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		maxChanged: function () {
 			this.rangeChanged();
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		previous: function (inSender, inEvent) {
 			if (this.value > this.min) {
 				this.setValue(this.value - 1);
@@ -162,6 +298,10 @@
 			this.fireChangeEvent();
 			return true;
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		next: function (inSender, inEvent) {
 			if (this.value < this.max) {
 				this.setValue(this.value + 1);
@@ -177,53 +317,111 @@
 			this.fireChangeEvent();
 			return true;
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		downPrevious: function (inSender, inEvent) {
 			inEvent.configureHoldPulse({endHold: 'onLeave', delay: 300});
 			this.previous(inSender, inEvent);
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		downNext: function (inSender, inEvent) {
 			inEvent.configureHoldPulse({endHold: 'onLeave', delay: 300});
 			this.next(inSender, inEvent);
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		updateOverlays: function () {
 			this.$.bottomOverlay.addRemoveClass('bottom-image', this.wrap || (this.value !== this.min));
 			this.$.topOverlay.addRemoveClass('top-image', this.wrap || (this.value !== this.max));
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		hideTopOverlay: function () {
 			this.$.topOverlay.removeClass('selected');
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		hideBottomOverlay: function () {
 			this.$.bottomOverlay.removeClass('selected');
 		},
+
+	 	/**
+		* @fires moon.IntegerPicker#event:onChange
+	 	* @private
+	 	*/
 		fireChangeEvent: function () {
 			this.doChange({
 				name:this.name,
 				value:this.value
 			});
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		resetOverlay: function () {
 			this.hideTopOverlay();
 			this.hideBottomOverlay();
 		},
+
+	 	/**
+		* @fires moon.Scroller#event:onRequestScrollIntoView
+	 	* @private
+	 	*/
 		spotlightFocus: function () {
 			this.bubble('onRequestScrollIntoView');
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		spotlightBlur: function () {
 			this.hideTopOverlay();
 			this.hideBottomOverlay();
 		},
-		//* Cache scroll bounds in _this.scrollBounds_ so we don't have to call stop() to retrieve them later
+
+	 	/**
+		* Cache scroll bounds in {@link moon.IntegerPicker#scrollBounds} so we don't have to call
+		* {@link enyo.Scroller#stop} to retrieve them later
+		*
+	 	* @private
+	 	*/
 		updateScrollBounds: function () {
 			this.scrollBounds = this.$.scroller.getStrategy()._getScrollBounds();
 		},
-		//* Silently scrolls to the _inValue_ y-position without animating
+
+	 	/**
+		* Silently scrolls to the _inValue_ y-position without animating
+		*
+	 	* @private
+	 	*/
 		setScrollTop: function (inValue) {
 			this.$.scroller.setScrollTop(inValue);
 		},
-		//* Ensures scroll position is in bounds.
+
+	 	/**
+		* Ensures scroll position is in bounds.
+		*
+	 	* @private
+	 	*/
 		stabilize: function () {
 			this.$.scroller.stabilize();
 		},
+
+	 	/**
+	 	* @private
+	 	*/
 		mousewheel: function (inSender, inEvent) {
 			// Make sure scrollers that container integer pickers don't scroll
 			inEvent.preventDefault();
@@ -231,7 +429,11 @@
 		}
 	});
 
-	// For backward compatibility
+ 	/**
+	* For backward compatibility
+	*
+ 	* @private
+ 	*/
 	moon.IntegerScrollPicker = moon.IntegerPicker;
 
 })(enyo, this);

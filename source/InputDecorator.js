@@ -1,40 +1,73 @@
 (function (enyo, scope) {
 	/**
-		_moon.InputDecorator_ is a control that provides input styling. Any controls
-		in the InputDecorator will appear to be inside an area styled as an	input.
-		Usually, an InputDecorator surrounds a [moon.Input](#moon.Input):
-
-			{kind: 'moon.InputDecorator', components: [
-				{kind: 'moon.Input'}
-			]}
-
-		Other controls, such as buttons, may be placed to the right or left of the
-		input control, e.g.:
-
-			{kind: 'moon.InputDecorator', components: [
-				{kind: 'moon.IconButton', src: 'search.png'},
-				{kind: 'moon.Input'},
-				{kind: 'moon.IconButton', src: 'cancel.png'}
-			]}
-
-		Note that the InputDecorator fits around the content inside it. If the
-		decorator is sized, then its contents will likely need to be sized as well.
-
-			{kind: 'moon.InputDecorator', style: 'width: 500px;', components: [
-				{kind: 'moon.Input', style: 'width: 100%;'}
-			]}
+	* _moon.InputDecorator_ is a control that provides input styling. Any controls
+	* in the InputDecorator will appear to be inside an area styled as an input.
+	* Usually, an InputDecorator surrounds a [moon.Input]{@link moon.Input}:
+	*
+	* ```
+	* {kind: 'moon.InputDecorator', components: [
+	* 	{kind: 'moon.Input'}
+	* ]}
+	* ```
+	*
+	* Other controls, such as buttons, may be placed to the right or left of the
+	* input control, e.g.:
+	*
+	* ```
+	* {kind: 'moon.InputDecorator', components: [
+	* 	{kind: 'moon.IconButton', src: 'search.png'},
+	* 	{kind: 'moon.Input'},
+	* 	{kind: 'moon.IconButton', src: 'cancel.png'}
+	* ]}
+	* ```
+	*
+	* Note that the InputDecorator fits around the content inside it. If the
+	* decorator is sized, then its contents will likely need to be sized as well.
+	*
+	* ```
+	* {kind: 'moon.InputDecorator', style: 'width: 500px;', components: [
+	* 	{kind: 'moon.Input', style: 'width: 100%;'}
+	* ]}
+	* ```
+	*
+	* @ui
+	* @class moon.InputDecorator
+	* @extends enyo.ToolDecorator
+	* @public
 	*/
 
-	enyo.kind({
-		name              : 'moon.InputDecorator',
-		kind              : 'enyo.ToolDecorator',
-		//* @protected
-		tag               : 'label',
-	
-		spotlight         : true,
-		spotlightDecorate : false,
+	enyo.kind(
+		/** @lends moon.InputDecorator.prototype */ {
 
-		handlers : {
+	 	/**
+	 	* @private
+	 	*/
+		name: 'moon.InputDecorator',
+
+ 		/**
+ 		* @private
+ 		*/
+		kind: 'enyo.ToolDecorator',
+
+ 		/**
+ 		* @private
+ 		*/
+		tag: 'label',
+
+ 		/**
+ 		* @private
+ 		*/
+		spotlight: true,
+
+ 		/**
+ 		* @private
+ 		*/
+		spotlightDecorate: false,
+
+ 		/**
+ 		* @private
+ 		*/
+		handlers: {
 			onDisabledChange  : 'disabledChangeHandler',
 			onfocus           : 'focusHandler',
 			onblur            : 'blurHandler',
@@ -47,12 +80,16 @@
 			onSpotlightDown   : 'spotlightDownHandler'
 		},
 
-		//* @protected
-		/**************************************************/
-
+ 		/**
+ 		* @private
+ 		*/
 		_oInputControl: null,
 
-		// Returns boolean indicating whether passed-in control is an input field.
+ 		/**
+		* Returns boolean indicating whether passed-in control is an input field.
+		*
+ 		* @private
+ 		*/
 		_isInput: function (oControl) {
 			return (
 				oControl instanceof moon.Input		||
@@ -61,7 +98,11 @@
 			);
 		},
 
-		// Traverses tree of children to find input control.
+ 		/**
+		* Traverses tree of children to find input control.
+		*
+ 		* @private
+ 		*/
 		_findInputControl: function (oControl) {
 			oControl = oControl || this;
 
@@ -77,9 +118,9 @@
 			}
 		},
 
-		//* @public
-		/**************************************************/
-
+ 		/**
+ 		* @public
+ 		*/
 		create: function () {
 			this.inherited(arguments);
 			this.updateFocus(false);
@@ -92,28 +133,45 @@
 			}
 		},
 
+ 		/**
+ 		* @public
+ 		*/
 		createComponent: function () {
 			this.inherited(arguments);
 			this._oInputControl = this._findInputControl();
 		},
 
+ 		/**
+ 		* @public
+ 		*/
 		createComponents: function () {
 			this.inherited(arguments);
 			this._oInputControl = this._findInputControl();
 		},
 
+ 		/**
+		* @param {Boolean} bFocus Add/Remove moon-focused class
+ 		* @public
+ 		*/
 		updateFocus: function (bFocus) {
 			this.focused = bFocus;
 			this.addRemoveClass('moon-focused', this.alwaysLooksFocused || this.focused);
 		},
 
+ 		/**
+		* @returns {Object} a reference to the child input control
+ 		* @public
+ 		*/
 		getInputControl: function () {
 			return this._oInputControl;
 		},
 
-		//* @protected
 		// Event handlers:
 		/**************************************************/
+
+		/**
+ 		* @private
+ 		*/
 		focusHandler: function (oSender, oEvent) {
 			if (enyo.Spotlight.getCurrent() != this) {
 				// Force a spot here, even when we're in pointer mode,
@@ -125,11 +183,17 @@
 			this.updateFocus(true);
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		blurHandler: function () {
 			enyo.Spotlight.unfreeze();
 			this.updateFocus(false);
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		disabledChangeHandler: function (oSender, oEvent) {
 			this.addRemoveClass('moon-disabled', oEvent.originator.disabled);
 		},
@@ -137,10 +201,17 @@
 		// Spotlight Event handlers:
 		/**************************************************/
 
+ 		/**
+		* @fires moon.Scroller#event:onRequestScrollIntoView
+ 		* @private
+ 		*/
 		spotlightFocusHandler: function () {
 			this.bubble('onRequestScrollIntoView');
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightSelectHandler: function (oSender, oEvent) {
 			var oInput = this.getInputControl();
 			if (oInput) {
@@ -153,10 +224,16 @@
 			}
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightBlurHandler: function (oSender, oEvent) {
 			this.blur();
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightLeftHandler: function (oSender, oEvent) {
 			var oInput = this.getInputControl();
 			if (oInput && oInput.hasFocus() && oInput.left) {
@@ -170,6 +247,9 @@
 			}
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightRightHandler: function (oSender, oEvent) {
 			var oInput = this.getInputControl();
 			if (oInput && oInput.hasFocus() && oInput.right) {
@@ -183,6 +263,9 @@
 			}
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightUpHandler: function (oSender, oEvent) {
 			var oInput = this.getInputControl();
 			if (oInput && oInput.hasFocus() && oInput.up) {
@@ -196,6 +279,9 @@
 			}
 		},
 
+ 		/**
+ 		* @private
+ 		*/
 		spotlightDownHandler: function (oSender, oEvent) {
 			var oInput = this.getInputControl();
 			if (oInput && oInput.hasFocus() && oInput.down) {
