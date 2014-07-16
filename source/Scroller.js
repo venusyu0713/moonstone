@@ -57,7 +57,7 @@ enyo.kind({
 			this value to increase the distance scrolled when the pagination buttons
 			are held.
 		*/
-		paginationScrollMultiplier: 8,_
+		paginationScrollMultiplier: 8,
 		/**
 			When true, the scroll wheel moves spotlight focus up/down through the
 			scroller when in 5-way mode. (In pointer mode, the scroll wheel always
