@@ -3,6 +3,8 @@
   display: inline-block;
   height: @moon-picker-button-width;
   border-radius: @moon-picker-button-width / 2;
+  padding-left: 60px;
+  padding-right: 60px;
 
   > * {
     display: inline-block;
@@ -21,7 +23,7 @@
   }
 
   .moon-simple-integer-picker-button {
-    position: relative;
+    position: absolute;
     width: @moon-picker-button-width;
     text-align: center;
     font-family: @moon-icon-font-family;
@@ -29,11 +31,17 @@
     line-height: @moon-picker-button-width;
     color: @moon-sub-header-text-color;
 
-    &.left:after {
-      content: @moon-icon-arrowsmallleft;
+    &.left {
+      left:0;
+      &:after {
+        content: @moon-icon-arrowsmallleft;
+      }
     }
-    &.right:after {
-      content: @moon-icon-arrowsmallright;
+    &.right {
+      right: 0;
+      &:after {
+        content: @moon-icon-arrowsmallright;
+      }
     }
     .moon-simple-integer-picker-button-tap-area {
       position: absolute;
@@ -48,9 +56,17 @@
     .moon-sub-header-text;
     width: auto;
     white-space: nowrap;
-    padding: 0 8px;
     text-align: center;
     box-sizing: border-box;
+  }
+
+  &.variable-width .moon-simple-integer-picker-item {
+    width: 100%;
+  }
+
+  .moon-simple-integer-picker-client {
+    width: 100%;
+    white-space: nowrap;
   }
 }
 
@@ -58,10 +74,10 @@
 .spotlight {
   .moon-simple-integer-picker-button {
   box-sizing: border-box;
-    &.left:not(.pressed):after {
+    &.left:not(.selected):after {
       content: @moon-icon-arrowlargeleft;
     }
-    &.left.pressed {
+    &.left.selected {
         border-left: solid @moon-integer-picker-shadow-width @moon-shadow-color;
         border-radius: @moon-picker-button-width / 2 0 0 @moon-picker-button-width / 2;
 
@@ -69,10 +85,10 @@
           margin-left: -@moon-integer-picker-shadow-width;
         }
       }
-    &.right:not(.pressed):after {
+    &.right:not(.selected):after {
       content: @moon-icon-arrowlargeright;
     }
-    &.right.pressed {
+    &.right.selected {
       border-right: solid  @moon-integer-picker-shadow-width @moon-shadow-color;
       border-radius: 0 @moon-picker-button-width / 2 @moon-picker-button-width / 2 0;
       &:after {
@@ -82,28 +98,33 @@
   }
 }
 
-/*disabled*/
-.moon-simple-integer-picker.disabled,
-.moon-simple-integer-picker-button[disabled] {
-  cursor: default;
-  opacity: @moon-disabled-opacity;
-}
-
 /*RTL need these rules for directioal change -- do not remove*/
 .enyo-locale-right-to-left {
+  .moon-simple-integer-picker-client {
+    direction: ltr;
+  }
+  
   .moon-simple-integer-picker-button {
-    &.left:after {
-      content: @moon-icon-arrowsmallright;
+    &.left {
+      left: auto;
+      right: 0;
+      &:after {
+        content: @moon-icon-arrowsmallright;
+      }
     }
-    &.right:after {
-      content: @moon-icon-arrowsmallleft;
+    &.right {
+      right: auto;
+      left: 0;
+      &:after {
+        content: @moon-icon-arrowsmallleft;
+      }
     }
   }
   .spotlight .moon-simple-integer-picker-button {
-    &.left:not(.pressed):after {
+    &.left:not(.selected):after {
       content: @moon-icon-arrowlargeright;
     }
-    &.left.pressed {
+    &.left.selected {
         border-left: 0;
         border-right: solid @moon-integer-picker-shadow-width @moon-shadow-color;
         border-radius: 0 @moon-picker-button-width / 2 @moon-picker-button-width / 2 0;
@@ -112,10 +133,10 @@
           margin-right: -@moon-integer-picker-shadow-width;
         }
       }
-    &.right:not(.pressed):after {
+    &.right:not(.selected):after {
       content: @moon-icon-arrowlargeleft;
     }
-    &.right.pressed {
+    &.right.selected {
       border-right: 0;
       border-left: solid  @moon-integer-picker-shadow-width @moon-shadow-color;
       border-radius: @moon-picker-button-width / 2 0 0 @moon-picker-button-width / 2;

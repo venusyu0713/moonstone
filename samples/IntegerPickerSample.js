@@ -3,9 +3,21 @@ enyo.kind({
 	kind: "FittableRows",
 	classes: "moon enyo-unselectable enyo-fit",
 	components: [
-		{fit:true, components: [
-			{kind: "moon.Divider", content: "Integer Picker"},
-			{kind: "moon.IntegerPicker", value: 2013, min: 1900, max: 2100, onChange: "changed"}
+		{kind: "moon.Scroller", fit:true, components: [
+			{classes: "moon-hspacing", components: [
+				{components: [
+					{kind: "moon.Divider", content: "Integer Picker"},
+					{kind: "moon.IntegerPicker", value: 2013, min: 1900, max: 2100, onChange: "changed"}
+				]},
+				{components: [
+					{kind: "moon.Divider", content: "Direct Integer Picker"},
+					{kind: "moon.IntegerPicker", value: 2013, min: 1900, max: 2100, animate: false, onChange: "changed"},
+				]},
+				{components: [
+					{kind: "moon.Divider", content: "Leap Year Picker"},
+					{kind: "moon.IntegerPicker", value: 2013, min: 1900, max: 2100, step: 4, onChange: "changed"}
+				]}
+			]}
 		]},
 		{kind: "moon.Divider", content: "Result"},
 		{kind: "moon.BodyText", name: "value", content: "No change yet"}
