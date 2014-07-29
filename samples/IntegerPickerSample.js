@@ -14,8 +14,12 @@ enyo.kind({
 					{kind: "moon.IntegerPicker", value: 2013, min: 1900, max: 2100, animate: false, onChange: "changed"},
 				]},
 				{components: [
-					{kind: "moon.Divider", content: "Leap Year Picker"},
+					{kind: "moon.Divider", content: "Stepped Picker"},
 					{kind: "moon.IntegerPicker", value: 2012, min: 1900, max: 2100, step: 4, onChange: "changed"}
+				]},
+				{components: [
+					{kind: "moon.Divider", content: "Wrapping Picker"},
+					{kind: "moon.IntegerPicker", value: 0, min: -10, max: 10, wrap: true, onChange: "changed"}
 				]}
 			]}
 		]},
