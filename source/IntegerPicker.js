@@ -596,10 +596,10 @@
 		* @private
 		*/
 		scrollStop: function (sender, event) {
-			// If direction is zero, we're in the middle of handling a next or previous so ignore
-			// those scroll stops. Otherwise, if we're animating the scroll, ensure the position
-			// is right.
-			if(this.animate && this.direction) {
+			// If direction is non-zero, we're in the middle of handling a next or previous so
+			// ignore those scroll stops. Otherwise, if we're animating the scroll, ensure the
+			// position is right.
+			if(this.animate && !this.direction) {
 				var index = this.valueToIndex(this.value);
 				this.scrollToIndex(index, true);
 			}
