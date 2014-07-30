@@ -135,11 +135,13 @@
 						// have to reset to natural width before getting bounds
 						this.$.item.setStyle('width: auto');
 						ib = this.$.item.getBounds();
+						
+						this.width = ib.width + this.itemPadding;
+						this.$.item.setStyle('width: ' + this.width + 'px');
 					}, this);
 
-					this.width = ib.width + this.itemPadding;
+					
 					this.applyStyle('width', this.width + 'px');
-					this.$.item.setStyle('width: ' + this.width + 'px');
 				};
 			}
 		}),

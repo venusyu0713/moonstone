@@ -180,6 +180,8 @@
 				{classes:'moon-scroll-picker-overlay next'},
 				{classes: 'moon-scroll-picker-taparea'}
 			]},
+			// Forcing TouchScrollStrategy because TranslateScrollStrategy doesn't work correctly
+			// with this component.
 			{kind: 'enyo.Scroller', thumb:false, touch:true, useMouseWheel: false, classes: 'moon-scroll-picker', onScrollStop: 'scrollStop', components:[
 				{name:'repeater', kind:'enyo.FlyweightRepeater', classes: 'list', ondragstart: 'dragstart', onSetupItem: 'setupItem', noSelect: true, components: [
 					{name: 'item', classes: 'moon-scroll-picker-item'}
@@ -288,6 +290,7 @@
 	 	* @private
 	 	*/
 		valueChanged: function (old) {
+			this.needsScrollingFixed = true;
 			this.value -= (this.value-this.min)%this.step;
 			if (this.value < this.min) {
 				this.setMin(this.value);
@@ -500,10 +503,36 @@
 				// rowOffset should be the lesser of the indices and count is the difference + 1
 				var index = Math.min(oldIndex, newIndex);
 				var count = Math.abs(newIndex - oldIndex) + 1;
+
+				var priorOffsetLeft = 0;
+				var visibleIndex = index;
+
+				var sl = this.$.scroller.getScrollLeft();
+				for(var i=this.$.repeater.get('rowOffset'); i<=index+count; i++) {
+					var n = this.$.repeater.fetchRowNode(i);
+					if(n) {
+						var l = n.offsetLeft;
+						var r = n.offsetLeft + n.offsetWidth;
+						var sr = sl + n.offsetWidth;
+						var isVisible = (l >= sl && l < sr) || (r > sl && r <= sr);
+						
+						if(isVisible) {
+							visibleIndex = i;
+							index = Math.min(i, index);
+							count = Math.abs(index - Math.max(newIndex, oldIndex)) + 1;
+							priorOffsetLeft = l;
+							break;
+						}
+					}
+				}
+
 				this.updateRepeater(index, count);
 
-				this.scrollToIndex(oldIndex, false);
-				this.startJob('valueChanged-Scroller', this.bindSafely('scrollToIndex', newIndex, true), 16);
+				var oldNode = this.$.repeater.fetchRowNode(visibleIndex);
+				var scrollOffset = priorOffsetLeft - oldNode.offsetLeft;
+				this.$.scroller.setScrollLeft(sl - scrollOffset);
+
+				this.startJob('valueChanged-Scroller', this.bindSafely('scrollToIndex', newIndex, true), 32);
 			} else {
 				// if old isn't specified, setup the repeater with only this.value and jump to it
 				this.updateRepeater(newIndex);
@@ -599,7 +628,8 @@
 			// If direction is non-zero, we're in the middle of handling a next or previous so
 			// ignore those scroll stops. Otherwise, if we're animating the scroll, ensure the
 			// position is right.
-			if(this.animate && !this.direction) {
+			if(this.needsScrollingFixed && this.animate && !this.direction) {
+				this.needsScrollingFixed = false;
 				var index = this.valueToIndex(this.value);
 				this.scrollToIndex(index, true);
 			}
