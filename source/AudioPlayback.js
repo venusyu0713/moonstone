@@ -150,7 +150,7 @@
 							{kind: 'moon.IconButton', classes: 'moon-audio-icon-button left', src: 'assets/icon-rew-btn.png', ontap: 'playPrevious'},
 							{kind: 'moon.IconButton', name: 'btnPlay', classes: 'moon-audio-icon-button left', src: 'assets/icon-play-btn.png', ontap: 'togglePlay'},
 							{kind: 'moon.IconButton', classes: 'moon-audio-icon-button left', src: 'assets/icon-fwd-btn.png', ontap: 'playNext'},
-							{kind: 'moon.IconButton', classes: 'moon-audio-icon-button right', src: '../assets/icon-album.png', ontap: 'toggleTrackDrawer'}
+							{kind: 'moon.IconButton', classes: 'moon-audio-icon-button right', src: 'assets/icon-album.png', ontap: 'toggleTrackDrawer'}
 						]}
 					]},
 					{kind: 'FittableColumns', rtl: false, classes: '', components: [
@@ -164,14 +164,9 @@
 			]}
 		],
 
-		/**
-		* @private
-		*/
-		initComponents: function () {
-			this.components = [{kind: 'moon.AudioPlaybackQueue'}];
-			this.inherited(arguments);
-			this.components = null;
-		},
+		playbackQueue: [
+			{kind: 'moon.AudioPlaybackQueue', onSelect: 'itemSelected'}
+		],
 
 		/**
 		* @private
@@ -179,6 +174,7 @@
 		create: function () {
 			this.inherited(arguments);
 			this.$.controlDrawer.createComponents(this.audioComponents, {owner:this});
+			this.createComponents(this.playbackQueue, {owner: this});
 		},
 
 		/**
@@ -229,7 +225,7 @@
 			this.updatePlayTime('0:00', '0:00');
 			this.$.trackIcon.applyStyle('background-image', 'url(../assets/default-music.png)');
 			// moon.Drawer needs a method for updating marquee content
-			this.owner.$.drawers.$.drawerHandle.setContent(a.trackName + ' by ' + a.artistName);
+			// this.owner.$.drawers.$.drawerHandle.setContent(a.trackName + ' by ' + a.artistName);
 		},
 
 		/**
@@ -275,6 +271,11 @@
 			var currentTime = (totalTime / 100) * inEvent.value;
 			this.updatePlayTime(this.toReadableTime(currentTime), this.toReadableTime(totalTime));
 			this.$.audio.seekTo(currentTime);
+		},
+
+		itemSelected: function (sender, event) {
+			var index = event.index;
+			this.playAtIndex(index);
 		},
 
 		/**
@@ -359,15 +360,8 @@
 		* @param {String} duration  String specifying duration eg. '0:22'
 		* @public
 		*/
-		addAudioTrack: function (inSrc, inTrack, inArtist, inAlbum, inDuration) {
-			var a = {
-				src: inSrc,
-				trackName: inTrack,
-				artistName: inArtist,
-				albumName: inAlbum,
-				duration: inDuration
-			};
-			this.audioTracks[this.audioTracks.length] = a;
+		addAudioTrack: function (track) {
+			this.audioTracks.push(track);
 			this.updateTrackCount();
 			this.waterfall('onAddAudio', {tracks: this.audioTracks});
 		},
@@ -428,27 +422,26 @@
 		/**
 		* @private
 		*/
-	   handlers: {
+		events: {
+			onSelect: ''
+		},
+
+		/**
+		* @private
+		*/
+		handlers: {
 			onAddAudio: 'addAudio'
-	   },
+		},
 
 		/**
 		* @private
 		*/
 		components: [
 			{kind: 'moon.Header', name: 'queueHeader', title: 'Music Queue', titleBelow: '2 Tracks'},
-			{
-				kind: 'moon.List',
-				name: 'list',
-				classes: 'enyo-unselectable',
-				fit: true,
-				multiSelect: false,
-				onSetupItem: 'setupItem',
-				components: [
-					{name: 'item', kind: 'moon.AudioListItem', classes: 'moon-audio-queue-list enyo-border-box', onRemove: 'removeTap'}
-				]
-			}
-	   ],
+			{kind: 'enyo.DataRepeater', name: 'list', classes: 'enyo-unselectable', fit: true, multiSelect: false, components: [
+				{kind: 'moon.AudioListItem', classes: 'moon-audio-queue-list enyo-border-box', ontap: 'itemTapped'}
+			]}
+		],
 
 		/**
 		* @private
@@ -466,24 +459,26 @@
 		/**
 		* @private
 		*/
-		addAudio: function (inSender, inEvent) {
-			var i = this.$.list.getCount() + 1;
-			this.tracks = inEvent.tracks;
-			this.$.list.setCount( i );
-			this.$.list.reset();
-			this.$.queueHeader.setTitleBelow(i + ' Tracks');
+		addAudio: function (sender, event) {
+			var collection = new enyo.Collection(event.tracks);
+
+			this.$.list.set('collection', collection);
+			this.$.queueHeader.set('titleBelow', collection.get('length') + ' Tracks');
 		},
 
 		/**
 		* @private
 		*/
-		setupItem: function (inSender, inEvent) {
-			var i = inEvent.index;
-			var t = this.tracks[i];
-			var item = {artistName: t.artistName, trackName: t.trackName, src: '', albumName: t.albumName, duration: t.duration};
-			this.$.item.setTrack(item);
-			this.$.item.setSelected(inSender.isSelected(i));
-			return true;
+		itemTapped: function (sender, event) {
+			var index = event.index;
+			var m = this.$.list.get('collection').at(index);
+
+			if(this.$.list.isSelected(m)) {
+				this.doSelect({
+					item: m.raw(),
+					index: index
+				});
+			}
 		}
 	});
 
@@ -501,52 +496,34 @@
 		*/
 		name: 'moon.AudioListItem',
 
-		/**
-		* @private
-		*/
-		events: {
-
-			/**
-			* {@link moon.AudioListItem#event:onRemove}
-			*/
-			onRemove: ''
-		},
+		bindings: [
+			{from: '.model.trackName', to: '.$.trackName.content'},
+			{from: '.model.albumSrc', to: '.$.albumArt.src'},
+			{from: '.model.artistName', to: '.$.artistName.content'},
+			{from: '.model.albumName', to: '.$.albumName.content'},
+		],
 
 		/**
 		* @private
 		*/
 		components: [
-			{name: 'albumArt', kind: 'Image', classes: 'moon-audio-queue-album-art', src: 'assets/default-music-sm.png'},
+			{name: 'albumArt', kind: 'Image', classes: 'moon-audio-queue-album-art'},
 			{components: [
 				{name: 'trackName'},
-				{name: 'artistName'}
+				{components: [
+					{tag: 'span', name: 'artistName'},
+					{tag: 'span', content: ' - '},
+					{tag: 'span', name: 'albumName'}
+				]}
 			]}
 		],
 
 		/**
 		* @private
 		*/
-		setTrack: function (inAudio) {
-			this.$.trackName.setContent(inAudio.trackName);
-			this.$.artistName.setContent(inAudio.artistName + ' - ' + inAudio.albumName);
-			this.$.albumArt.setSrc(inAudio.src);
+		selectedChanged: function () {
+			this.addRemoveClass('moon-audio-queue-list-selected', this.selected);
 		},
-
-		/**
-		* @private
-		*/
-		setSelected: function (inSelected) {
-			this.addRemoveClass('moon-audio-queue-list-selected', inSelected);
-		},
-
-		/**
-		* @fires moon.AudioListItem#onRemove
-		* @private
-		*/
-		removeTap: function (inSender, inEvent) {
-			this.doRemove(inEvent);
-			return true;
-		}
 	});
 
 })(enyo, this);

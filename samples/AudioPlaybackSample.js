@@ -2,22 +2,15 @@ enyo.kind({
 	name: "moon.sample.AudioPlaybackSample",
 	classes: "enyo-unselectable moon sample-audio-playback",
 	audioFiles: [
-		{src: "http://enyojs.com/_media/thunder.mp3", trackName: "Thunder", artistName: "Sound Effects Artist", albumName: "Sound Effects", duration: "0:22"},
-		{src: "http://enyojs.com/_media/engine.mp3", trackName: "Engine", artistName: "Sound Effects Artist", albumName: "Sound Effects", duration: "0:04"}
+		{src: "http://enyojs.com/_media/thunder.mp3", trackName: "Thunder", artistName: "Sound Effects Artist", albumName: "Sound Effects", duration: "0:22", albumSrc: "assets/default-music-sm.png"},
+		{src: "http://enyojs.com/_media/engine.mp3", trackName: "Engine", artistName: "Sound Effects Artist", albumName: "Sound Effects", duration: "0:04", albumSrc: "assets/default-music-sm.png"}
 	],
 	handlers: {
 		onPlayIndex: "playIndex"
 	},
 	components: [
 		{kind:"moon.Drawers", drawers:[
-			{
-				kind: "moon.AudioPlayback",
-				name: "audioPlayback",
-				handle: {
-					kind: "moon.DrawerHandle",
-					marquee: true
-				}
-			}
+			{kind: "moon.AudioPlayback", name: "audioPlayback"}
 		],
 		components: [
 			{kind: "moon.sample.audioPlayback.pageContent"}
@@ -27,14 +20,11 @@ enyo.kind({
 		this.inherited(arguments);
 		this.setupAudioTracks();
 	},
-	rendered: function() {
-		this.inherited(arguments);
-	},
 	setupAudioTracks: function() {
 		var a = this.audioFiles;
 		var len = a.length;
 		for (var i=0; i<len; i++) {
-			this.$.audioPlayback.addAudioTrack(a[i].src, a[i].trackName, a[i].artistName, a[i].albumName, a[i].duration);
+			this.$.audioPlayback.addAudioTrack(a[i]);
 		}
 	},
 	playIndex: function(inSender, inEvent) {
