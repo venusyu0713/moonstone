@@ -79,12 +79,12 @@
 		* @private
 		*/
 		handlers: {
-			onRequestScrollIntoView : 'requestScrollIntoView',
-			onRequestSetupBounds	: 'requestSetupBounds',
-			onenter                 : 'enter',
-			onleave                 : 'leave',
-			onSpotlightFocused      : 'manageSpotlightFocus',
-			onSpotlightBlur         : 'manageSpotlightFocus'
+			onRequestScrollIntoView   : 'requestScrollIntoView',
+			onRequestSetupBounds	  : 'requestSetupBounds',
+			onenter                   : 'enter',
+			onleave                   : 'leave',
+			onSpotlightContainerEnter : 'enter',
+			onSpotlightContainerLeave : 'leave'
 		},
 
 		/**
@@ -358,17 +358,6 @@
 		leave: function(sender, event) {
 			this.hovering = false;
 			this.showHideScrollColumns(false);
-		},
-
-		/**
-		* Show / hide pagination controls in response to 5-way focus / blur events.
-		*
-		* @private
-		*/
-		manageSpotlightFocus: function(sender, event) {
-			if (!enyo.Spotlight.getPointerMode()) {
-				this.showHideScrollColumns(event.type == 'onSpotlightFocused');
-			}
 		},
 
 		/**
